@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useAuth } from './AuthContext';
+import LoginModal from './LoginModal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -376,6 +379,9 @@ export default function ServicesSection() {
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const cardsRef = useRef([]);
+  const { user } = useAuth();
+  const router = useRouter();
+  const [loginOpen, setLoginOpen] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -398,6 +404,7 @@ export default function ServicesSection() {
   }, []);
 
   return (
+    <>
     <section
       id="services"
       ref={sectionRef}
@@ -478,9 +485,9 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        {/* Cards grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18 }} className="services-grid">
-          {services.map((service, i) => (
+        {/* Cards grid — show only first 3 on homepage */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18 }} className="services-grid">
+          {services.slice(0, 3).map((service, i) => (
             <SpringTiltCard
               key={service.number}
               service={service}
@@ -488,12 +495,64 @@ export default function ServicesSection() {
             />
           ))}
         </div>
+
+        {/* View All Services CTA */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 16,
+          marginTop: 56,
+        }}>
+          <p style={{
+            fontSize: 14,
+            color: 'var(--text-muted)',
+            textAlign: 'center',
+          }}>
+            Explore {services.length - 3} more services including cybersecurity, web development, and AI content tools.
+          </p>
+          <button
+            onClick={() => {
+              if (user) {
+                router.push('/services');
+              } else {
+                setLoginOpen(true);
+              }
+            }}
+            className="btn-primary"
+            style={{
+              fontSize: 15,
+              padding: '14px 36px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
+            }}
+          >
+            View All Services
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+          {!user && (
+            <span style={{
+              fontSize: 12,
+              color: 'var(--text-muted)',
+              opacity: 0.7,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 5,
+            }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0110 0v4" />
+              </svg>
+              Login required to access full service catalog
+            </span>
+          )}
+        </div>
       </div>
 
       <style>{`
-        @media (max-width: 1280px) {
-          .services-grid { grid-template-columns: repeat(3, 1fr) !important; }
-        }
         @media (max-width: 900px) {
           .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
         }
@@ -516,5 +575,13 @@ export default function ServicesSection() {
         }
       `}</style>
     </section>
+
+    <LoginModal
+      isOpen={loginOpen}
+      onClose={() => setLoginOpen(false)}
+      onSuccess={() => router.push('/services')}
+      message="Sign in to access the full service catalog and add services to your quote."
+    />
+    </>
   );
 }

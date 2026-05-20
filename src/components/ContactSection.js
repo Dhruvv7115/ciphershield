@@ -194,18 +194,18 @@ export default function ContactSection() {
                   alignItems: 'center',
                   gap: 14,
                   padding: '14px 16px',
-                  background: 'var(--bg-surface)',
+                  background: '',
                   border: '1px solid var(--border-subtle)',
                   borderRadius: 10,
                   transition: 'all 0.2s ease',
                 }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = 'rgba(59,130,246,0.4)';
-                    e.currentTarget.style.background = 'var(--bg-elevated)';
+                    e.currentTarget.style.background = 'rgba(59, 130, 246, 0.08)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = 'var(--border-subtle)';
-                    e.currentTarget.style.background = 'var(--bg-surface)';
+                    e.currentTarget.style.background = '';
                   }}
                 >
                   <div style={{
@@ -275,7 +275,7 @@ export default function ContactSection() {
 
           {/* Right: form */}
           <div ref={formRef} style={{
-            background: 'var(--bg-surface)',
+            background: '',
             border: '1px solid var(--border-subtle)',
             borderRadius: 16,
             padding: '36px',

@@ -1,0 +1,78 @@
+/* Shared services data — used by both the homepage preview and the /services page */
+
+export const services = [
+  {
+    number: '01',
+    title: 'AI Business Process Automation',
+    desc: 'Transform manual workflows into intelligent, AI-driven processes that cut costs, eliminate errors, and scale operations 10× faster.',
+    features: ['Workflow Orchestration', 'Smart Triggers', 'Data Pipelines', 'ROI Analytics'],
+    color: '#6366F1',
+    price: 'From $2,999/mo',
+    category: 'AI & Automation',
+  },
+  {
+    number: '02',
+    title: 'Chatbot Development',
+    desc: 'Deploy intelligent chatbots across Web, WhatsApp, and support channels that understand context and convert visitors 24/7.',
+    features: ['Multi-Platform', 'NLP Powered', 'WhatsApp API', 'Live Analytics'],
+    color: '#818CF8',
+    price: 'From $1,999/mo',
+    category: 'AI & Automation',
+  },
+  {
+    number: '03',
+    title: 'AI Agents for Repetitive Workflows',
+    desc: 'Deploy autonomous AI agents that handle repetitive tasks — from data entry to report generation — freeing your team for high-value work.',
+    features: ['Autonomous Execution', 'Multi-Step Reasoning', 'Tool Integration', 'Self-Learning'],
+    color: '#6366F1',
+    price: 'From $3,499/mo',
+    category: 'AI & Automation',
+  },
+  {
+    number: '04',
+    title: 'GPT-Powered Enterprise Tools',
+    desc: 'Custom GPT-powered tools for your company — smart document analysis, automated communications, and intelligent decision support.',
+    features: ['Custom Fine-Tuning', 'API Integration', 'Doc Intelligence', 'Secure Deploy'],
+    color: '#818CF8',
+    price: 'From $4,999/mo',
+    category: 'AI & Automation',
+  },
+  {
+    number: '05',
+    title: 'Internal Knowledge Assistants',
+    desc: 'Build a company knowledge bot that instantly answers employee questions by learning from your docs, SOPs, and knowledge base.',
+    features: ['RAG Architecture', 'Knowledge Indexing', 'Role-Based Access', 'Continuous Learning'],
+    color: '#818CF8',
+    price: 'From $2,499/mo',
+    category: 'AI & Automation',
+  },
+  {
+    number: '06',
+    title: 'AI Content Generation Pipelines',
+    desc: 'End-to-end content pipelines powered by AI — blog posts, product descriptions, social media, and marketing copy at scale.',
+    features: ['Multi-Format', 'Brand Voice', 'SEO Optimized', 'Batch Processing'],
+    color: '#6366F1',
+    price: 'From $1,499/mo',
+    category: 'AI & Automation',
+  },
+  {
+    number: '07',
+    title: 'Cybersecurity Audits & Pen Testing',
+    desc: 'Military-grade penetration testing and security audits to identify vulnerabilities before adversaries exploit them. Zero-trust methodology.',
+    features: ['Red Teaming', 'VAPT', 'Compliance', 'Threat Modeling'],
+    color: '#FF3D5A',
+    price: 'From $7,999/engagement',
+    category: 'Cybersecurity',
+  },
+  {
+    number: '08',
+    title: 'Web Development Services',
+    desc: 'Premium web applications and digital platforms built with cutting-edge tech — performant, secure, and designed to convert.',
+    features: ['Next.js / React', 'API Integration', 'Performance', 'SEO & Security'],
+    color: '#818CF8',
+    price: 'From $4,999/project',
+    category: 'Development',
+  },
+];
+
+export const categories = ['All', 'AI & Automation', 'Cybersecurity', 'Development'];

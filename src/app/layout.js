@@ -1,5 +1,8 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/components/AuthContext";
+import { CartProvider } from "@/components/CartContext";
+import CartPanel from "@/components/CartPanel";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -36,7 +39,12 @@ export default function RootLayout({ children }) {
           transition: "background 0.3s ease, color 0.3s ease",
         }}
       >
-        {children}
+        <AuthProvider>
+          <CartProvider>
+            {children}
+            <CartPanel />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

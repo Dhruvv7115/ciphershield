@@ -8,15 +8,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
-  { value: '500+',  label: 'Enterprise Clients' },
+  { value: '500+', label: 'Enterprise Clients' },
   { value: '99.9%', label: 'Threat Detection' },
   { value: '< 2ms', label: 'Response Time' },
 ];
 
 export default function AboutSection() {
   const sectionRef = useRef(null);
-  const leftRef    = useRef(null);
-  const rightRef   = useRef(null);
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
@@ -70,19 +70,7 @@ export default function AboutSection() {
             border: '1px solid var(--glass-border)',
             borderRadius: 100, padding: '5px 18px', marginBottom: 20,
           }}>
-            <Image
-              src="/aritaro-logo.png"
-              alt="Aritaro Logo"
-              width={18}
-              height={18}
-              style={{ objectFit: 'contain', flexShrink: 0 }}
-            />
-            <span style={{
-              width: 6, height: 6, borderRadius: '50%',
-              background: 'var(--cyan-primary)',
-              boxShadow: '0 0 8px rgba(99,102,241,0.5)',
-              animation: 'pulse-glow 2s ease-in-out infinite', flexShrink: 0,
-            }} />
+
             <span style={{
               fontFamily: 'var(--font-orbitron), monospace',
               fontSize: 9, letterSpacing: '2.5px', color: 'var(--hero-badge-text)', fontWeight: 600,

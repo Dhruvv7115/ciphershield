@@ -86,7 +86,7 @@ function BlendedHeroVideo({ theme }) {
 }
 
 function subscribeTheme(callback) {
-  if (typeof window === 'undefined') return () => {};
+  if (typeof window === 'undefined') return () => { };
 
   const obs = new MutationObserver(() => callback());
   obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -187,9 +187,9 @@ function LayeredShield() {
   }, [runCycle]);
 
   const isIncoming = phase === 'incoming';
-  const isImpact   = phase === 'impact';
-  const isBroken   = phase === 'broken' || phase === 'reform';
-  const isReform   = phase === 'reform';
+  const isImpact = phase === 'impact';
+  const isBroken = phase === 'broken' || phase === 'reform';
+  const isReform = phase === 'reform';
 
   /* Panel core dimensions */
   const PW = 270, PH = 340, BR = 22;
@@ -207,9 +207,9 @@ function LayeredShield() {
     Panel 3 (front): (DX*3,DY*3)  ← this one breaks
   */
   const BACK_PANELS = [
-    { x: 0,     y: 0,     bg: 'var(--shield-layer-1-bg)', bd: 'var(--shield-layer-1-border)', sh: 'var(--shield-layer-1-shadow)' },
-    { x: DX,    y: DY,    bg: 'var(--shield-layer-2-bg)', bd: 'var(--shield-layer-2-border)', sh: 'var(--shield-layer-2-shadow)' },
-    { x: DX*2,  y: DY*2,  bg: 'var(--shield-layer-3-bg)', bd: 'var(--shield-layer-3-border)', sh: 'var(--shield-layer-3-shadow)' },
+    { x: 0, y: 0, bg: 'var(--shield-layer-1-bg)', bd: 'var(--shield-layer-1-border)', sh: 'var(--shield-layer-1-shadow)' },
+    { x: DX, y: DY, bg: 'var(--shield-layer-2-bg)', bd: 'var(--shield-layer-2-border)', sh: 'var(--shield-layer-2-shadow)' },
+    { x: DX * 2, y: DY * 2, bg: 'var(--shield-layer-3-bg)', bd: 'var(--shield-layer-3-border)', sh: 'var(--shield-layer-3-shadow)' },
   ];
   const FX = DX * 3, FY = DY * 3;  // front panel position
 
@@ -221,10 +221,10 @@ function LayeredShield() {
         <div key={d} style={{
           position: 'absolute',
           width: d, height: d, borderRadius: '50%',
-          border: `1px ${i === 1 ? 'dashed' : 'solid'} rgba(99,102,241,${0.08 + i*0.05})`,
-          top:  FY + PH / 2 - d / 2,
+          border: `1px ${i === 1 ? 'dashed' : 'solid'} rgba(99,102,241,${0.08 + i * 0.05})`,
+          top: FY + PH / 2 - d / 2,
           left: FX + PW / 2 - d / 2,
-          animation: `rotate-slow ${22 + i*9}s linear infinite ${i % 2 ? 'reverse' : ''}`,
+          animation: `rotate-slow ${22 + i * 9}s linear infinite ${i % 2 ? 'reverse' : ''}`,
           pointerEvents: 'none',
         }} />
       ))}
@@ -252,14 +252,14 @@ function LayeredShield() {
         transform: isBroken
           ? `translate(340px, -110px) rotate(26deg)`
           : isReform
-          ? `translate(340px, -110px) rotate(26deg)`
-          : 'translate(0,0) rotate(0deg)',
+            ? `translate(340px, -110px) rotate(26deg)`
+            : 'translate(0,0) rotate(0deg)',
         opacity: isBroken ? 0 : 1,
         transition: isBroken
           ? 'transform 0.75s cubic-bezier(0.4,0,1,1), opacity 0.6s ease'
           : isReform
-          ? 'none'
-          : 'transform 1.3s cubic-bezier(0.16,1,0.3,1), opacity 1s ease',
+            ? 'none'
+            : 'transform 1.3s cubic-bezier(0.16,1,0.3,1), opacity 1s ease',
         background: isImpact ? 'var(--shield-front-impact-bg)' : 'var(--shield-front-bg)',
         border: `1px solid ${isImpact ? 'var(--shield-front-impact-border)' : 'var(--shield-front-border)'}`,
         boxShadow: isImpact ? 'var(--shield-front-impact-shadow)' : 'var(--shield-front-shadow)',
@@ -270,8 +270,8 @@ function LayeredShield() {
         transition: isBroken
           ? 'transform 0.75s cubic-bezier(0.4,0,1,1), opacity 0.6s ease, background 0.25s, border-color 0.25s, box-shadow 0.25s'
           : isReform
-          ? 'none'
-          : 'transform 1.3s cubic-bezier(0.16,1,0.3,1), opacity 1s ease, background 0.4s, border-color 0.4s, box-shadow 0.4s',
+            ? 'none'
+            : 'transform 1.3s cubic-bezier(0.16,1,0.3,1), opacity 1s ease, background 0.4s, border-color 0.4s, box-shadow 0.4s',
       }}>
         {/* Top inner highlight */}
         <div style={{

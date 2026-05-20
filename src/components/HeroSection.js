@@ -50,8 +50,8 @@ export default function HeroSection() {
         textAlign: 'center',
         padding: '140px 32px 80px',
         background: isLight
-            ? '#ffffff'
-            : 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59,130,246,0.1) 0%, transparent 60%), var(--bg-base)',
+          ? '#ffffff'
+          : 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59,130,246,0.1) 0%, transparent 60%), var(--bg-base)',
         position: 'relative',
         overflow: 'hidden',
       }}

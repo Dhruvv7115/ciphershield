@@ -425,7 +425,7 @@ export default function ServicesSection() {
         position: 'absolute', bottom: 0, left: 0, right: 0, height: 1,
         background: 'linear-gradient(90deg, transparent, rgba(99,102,241,0.15), transparent)',
       }} />
-      <div className="cyber-grid" style={{ position: 'absolute', inset: 0, opacity: 0.6, pointerEvents: 'none' }} />
+      <div className="cyber-grid" style={{ position: 'absolute', inset: 0, opacity: 0.2, pointerEvents: 'none', zIndex: 0 }} />
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
 
@@ -501,16 +501,41 @@ export default function ServicesSection() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 16,
-          marginTop: 56,
+          gap: 20,
+          marginTop: 64,
+          padding: '48px 32px',
+          background: 'rgba(99,102,241,0.04)',
+          border: '1px solid rgba(99,102,241,0.12)',
+          borderRadius: 24,
+          position: 'relative',
+          overflow: 'hidden',
         }}>
+          {/* Glow accent */}
+          <div style={{
+            position: 'absolute', top: '-50%', left: '50%',
+            transform: 'translateX(-50%)',
+            width: '60%', height: '200%',
+            background: 'radial-gradient(ellipse, rgba(99,102,241,0.06) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }} />
+
           <p style={{
-            fontSize: 14,
-            color: 'var(--text-muted)',
+            fontSize: 15,
+            color: '#64748B',
             textAlign: 'center',
+            lineHeight: 1.7,
+            maxWidth: 480,
+            position: 'relative',
+            zIndex: 1,
           }}>
-            Explore {services.length - 3} more services including cybersecurity, web development, and AI content tools.
+            Explore{' '}
+            <span style={{ color: '#818CF8', fontWeight: 600 }}>
+              {services.slice(3).length} more services
+            </span>
+            {' '}— cybersecurity audits, web development,<br />
+            AI content pipelines, and enterprise tools.
           </p>
+
           <button
             onClick={() => {
               if (user) {
@@ -519,34 +544,54 @@ export default function ServicesSection() {
                 setLoginOpen(true);
               }
             }}
-            className="btn-primary"
             style={{
+              position: 'relative',
+              zIndex: 1,
               fontSize: 15,
-              padding: '14px 36px',
+              fontWeight: 700,
+              padding: '15px 40px',
               display: 'inline-flex',
               alignItems: 'center',
               gap: 10,
+              background: 'linear-gradient(135deg, #6366F1 0%, #818CF8 100%)',
+              border: 'none',
+              borderRadius: 12,
+              color: '#fff',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              boxShadow: '0 6px 28px rgba(99,102,241,0.4)',
+              transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
+              letterSpacing: '0.02em',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-3px)';
+              e.currentTarget.style.boxShadow = '0 12px 48px rgba(99,102,241,0.55)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 6px 28px rgba(99,102,241,0.4)';
             }}
           >
-            View All Services
+            {user ? 'View All Services' : 'Sign In to View All Services'}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
+
           {!user && (
             <span style={{
+              position: 'relative', zIndex: 1,
               fontSize: 12,
-              color: 'var(--text-muted)',
-              opacity: 0.7,
+              color: '#334155',
               display: 'flex',
               alignItems: 'center',
-              gap: 5,
+              gap: 6,
+              fontFamily: 'var(--font-sans)',
             }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0110 0v4" />
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" />
               </svg>
-              Login required to access full service catalog
+              Free account · No credit card required
             </span>
           )}
         </div>

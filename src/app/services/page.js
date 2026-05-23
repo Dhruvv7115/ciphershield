@@ -1,227 +1,221 @@
 'use client';
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/components/AuthContext';
 import { useCart } from '@/components/CartContext';
 import { services, categories } from '@/components/servicesData';
 import Link from 'next/link';
 import Image from 'next/image';
 import LoginModal from '@/components/LoginModal';
-import ThemeToggle from '@/components/ThemeToggle';
 
-/* ─── Service icon SVGs ──────────────────────── */
-const serviceIcons = {
-  '01': (
-    <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-      <rect x="3" y="3" width="22" height="22" rx="4" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M8 14h4l2-4 2 6 2-3h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="21" cy="7" r="3" fill="currentColor" opacity="0.3" />
-    </svg>
-  ),
-  '02': (
-    <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-      <path d="M4 6a3 3 0 013-3h14a3 3 0 013 3v10a3 3 0 01-3 3H10l-4 4v-4H7a3 3 0 01-3-3V6z" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="10" cy="11" r="1.2" fill="currentColor" /><circle cx="14" cy="11" r="1.2" fill="currentColor" /><circle cx="18" cy="11" r="1.2" fill="currentColor" />
-    </svg>
-  ),
-  '03': (
-    <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-      <circle cx="14" cy="10" r="5" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M14 15v5M10 25a7 7 0 0114 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="14" cy="10" r="2" fill="currentColor" opacity="0.3" />
-    </svg>
-  ),
-  '04': (
-    <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-      <rect x="5" y="3" width="18" height="22" rx="3" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M9 8h10M9 12h7M9 16h10M9 20h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  ),
-  '05': (
-    <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-      <circle cx="14" cy="14" r="10" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-      <circle cx="14" cy="14" r="1.5" fill="currentColor" />
-    </svg>
-  ),
-  '06': (
-    <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-      <path d="M4 7a2 2 0 012-2h16a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M8 10l4 3-4 3M14 16h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  '07': (
-    <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-      <path d="M14 3L4 7v8c0 5.25 4.4 9.8 10 11 5.6-1.2 10-5.75 10-11V7L14 3z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-      <circle cx="14" cy="13" r="3" stroke="currentColor" strokeWidth="1.2" />
-      <circle cx="14" cy="13" r="1" fill="currentColor" />
-    </svg>
-  ),
-  '08': (
-    <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-      <rect x="2" y="5" width="24" height="18" rx="3" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M2 10h24" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-      <path d="M8 17l3-3 3 3 4-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
+const icons = {
+  '01': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="3" y="3" width="22" height="22" rx="4" stroke="currentColor" strokeWidth="1.5"/><path d="M8 14h4l2-4 2 6 2-3h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="21" cy="7" r="3" fill="currentColor" opacity="0.3"/></svg>,
+  '02': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M4 6a3 3 0 013-3h14a3 3 0 013 3v10a3 3 0 01-3 3H10l-4 4v-4H7a3 3 0 01-3-3V6z" stroke="currentColor" strokeWidth="1.5"/><circle cx="10" cy="11" r="1.2" fill="currentColor"/><circle cx="14" cy="11" r="1.2" fill="currentColor"/><circle cx="18" cy="11" r="1.2" fill="currentColor"/></svg>,
+  '03': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="10" r="5" stroke="currentColor" strokeWidth="1.5"/><path d="M14 15v5M10 25a7 7 0 0114 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="14" cy="10" r="2" fill="currentColor" opacity="0.3"/></svg>,
+  '04': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="5" y="3" width="18" height="22" rx="3" stroke="currentColor" strokeWidth="1.5"/><path d="M9 8h10M9 12h7M9 16h10M9 20h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
+  '05': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" strokeWidth="1.5"/><circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1"/><circle cx="14" cy="14" r="1.5" fill="currentColor"/></svg>,
+  '06': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M4 7a2 2 0 012-2h16a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" stroke="currentColor" strokeWidth="1.5"/><path d="M8 10l4 3-4 3M14 16h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  '07': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M14 3L4 7v8c0 5.25 4.4 9.8 10 11 5.6-1.2 10-5.75 10-11V7L14 3z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="14" cy="13" r="3" stroke="currentColor" strokeWidth="1.2"/><circle cx="14" cy="13" r="1" fill="currentColor"/></svg>,
+  '08': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="2" y="5" width="24" height="18" rx="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 10h24" stroke="currentColor" strokeWidth="1" opacity="0.5"/><path d="M8 17l3-3 3 3 4-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
 };
+
+function ServiceCard({ service, inCart, onAdd, index }) {
+  const ref = useRef(null);
+  const glowRef = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const isThreat = service.color === '#FF3D5A';
+  const rgb = isThreat ? '255,61,90' : '99,102,241';
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.1 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  const handleMouseMove = (e) => {
+    if (!ref.current || !glowRef.current) return;
+    const r = ref.current.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 100;
+    const y = ((e.clientY - r.top) / r.height) * 100;
+    glowRef.current.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(${rgb},0.12) 0%, transparent 60%)`;
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { if (glowRef.current) glowRef.current.style.background = 'none'; }}
+      style={{
+        position: 'relative',
+        background: 'rgba(15,23,42,0.7)',
+        border: `1px solid rgba(${rgb},0.15)`,
+        borderRadius: 18,
+        padding: '28px 24px',
+        display: 'flex',
+        flexDirection: 'column',
+        backdropFilter: 'blur(10px)',
+        WebkitBackdropFilter: 'blur(10px)',
+        transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(30px)',
+        transitionDelay: `${(index % 4) * 0.07}s`,
+        minHeight: 380,
+        overflow: 'hidden',
+        cursor: 'default',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = `rgba(${rgb},0.4)`;
+        e.currentTarget.style.transform = 'translateY(-4px)';
+        e.currentTarget.style.boxShadow = `0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(${rgb},0.2)`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = `rgba(${rgb},0.15)`;
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow = 'none';
+        if (glowRef.current) glowRef.current.style.background = 'none';
+      }}
+    >
+      {/* Cursor glow */}
+      <div ref={glowRef} style={{ position: 'absolute', inset: 0, borderRadius: 'inherit', pointerEvents: 'none', transition: 'background 0.04s' }} />
+
+      {/* Category tag */}
+      <span style={{
+        position: 'absolute', top: 18, right: 18,
+        fontSize: 9, fontWeight: 700, letterSpacing: '1.5px',
+        color: service.color,
+        background: `rgba(${rgb},0.08)`,
+        border: `1px solid rgba(${rgb},0.18)`,
+        borderRadius: 100, padding: '3px 10px',
+        fontFamily: 'var(--font-mono)',
+        textTransform: 'uppercase',
+      }}>{service.category}</span>
+
+      <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 700, color: `rgba(${rgb},0.4)`, letterSpacing: '1px', marginBottom: 14, display: 'block' }}>{service.number}</span>
+
+        {/* Icon */}
+        <div style={{
+          width: 48, height: 48, borderRadius: 12,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: service.color,
+          background: `rgba(${rgb},0.07)`,
+          border: `1px solid rgba(${rgb},0.18)`,
+          marginBottom: 18,
+          transition: 'all 0.3s ease',
+        }}>
+          {icons[service.number]}
+        </div>
+
+        <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 700, color: '#F1F5F9', marginBottom: 10, lineHeight: 1.3 }}>{service.title}</h3>
+        <p style={{ fontSize: 12.5, color: '#64748B', lineHeight: 1.7, marginBottom: 16, flex: 1 }}>{service.desc}</p>
+
+        {/* Features */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 18 }}>
+          {service.features.map((f) => (
+            <span key={f} style={{
+              fontSize: 10, fontWeight: 600, padding: '3px 10px', borderRadius: 100,
+              background: `rgba(${rgb},0.06)`, border: `1px solid rgba(${rgb},0.14)`,
+              color: service.color, fontFamily: 'var(--font-sans)', letterSpacing: '0.02em',
+            }}>{f}</span>
+          ))}
+        </div>
+
+        {/* Price + divider */}
+        <div style={{ height: 1, background: `linear-gradient(90deg, rgba(${rgb},0.2), transparent 70%)`, marginBottom: 14 }} />
+        <div style={{ fontSize: 13, fontWeight: 700, color: '#94A3B8', fontFamily: 'var(--font-mono)', marginBottom: 14 }}>{service.price}</div>
+
+        {/* CTA */}
+        <button
+          onClick={onAdd}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            padding: '12px', borderRadius: 12, width: '100%', cursor: inCart ? 'default' : 'pointer',
+            fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600,
+            transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+            border: inCart ? '1px solid rgba(74,222,128,0.3)' : `1px solid rgba(${rgb},0.3)`,
+            background: inCart ? 'rgba(74,222,128,0.08)' : 'transparent',
+            color: inCart ? '#4ADE80' : service.color,
+          }}
+          onMouseEnter={(e) => { if (!inCart) { e.currentTarget.style.background = `rgba(${rgb},0.1)`; e.currentTarget.style.borderColor = `rgba(${rgb},0.5)`; } }}
+          onMouseLeave={(e) => { if (!inCart) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = `rgba(${rgb},0.3)`; } }}
+        >
+          {inCart ? (
+            <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Added to Quote</>
+          ) : (
+            <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>Add to Quote</>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function ServicesPage() {
   const { user } = useAuth();
   const { addToCart, items: cartItems, toggleCart } = useCart();
   const [activeCategory, setActiveCategory] = useState('All');
-  const [mounted, setMounted] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
 
-  if (!mounted) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'var(--bg-base)',
-      }}>
-        <div style={{
-          width: 36, height: 36,
-          border: '3px solid var(--border-subtle)',
-          borderTopColor: 'var(--cta)',
-          borderRadius: '50%',
-          animation: 'rotate-slow 0.7s linear infinite',
-        }} />
-      </div>
-    );
-  }
+  if (!mounted) return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#020617' }}>
+      <div style={{ width: 36, height: 36, border: '3px solid rgba(99,102,241,0.2)', borderTopColor: '#6366F1', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
 
-  const filtered = activeCategory === 'All'
-    ? services
-    : services.filter((s) => s.category === activeCategory);
+  const filtered = activeCategory === 'All' ? services : services.filter(s => s.category === activeCategory);
+  const isInCart = (n) => cartItems.some(i => i.number === n);
 
-  const isInCart = (num) => cartItems.some((i) => i.number === num);
-
-  const handleAddToCart = (service) => {
-    if (!user) {
-      setLoginOpen(true);
-      return;
-    }
+  const handleAdd = (service) => {
+    if (!user) { setLoginOpen(true); return; }
     if (!isInCart(service.number)) addToCart(service);
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-base)' }}>
-      {/* Nav */}
+    <div style={{ minHeight: '100vh', background: '#020617', position: 'relative', overflow: 'hidden' }}>
+      {/* BG orbs */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', top: '-15%', left: '20%', width: '60%', height: '50%', borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%)', animation: 'floatOrb 14s ease-in-out infinite' }} />
+        <div style={{ position: 'absolute', bottom: '-10%', right: '10%', width: '40%', height: '40%', borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,61,90,0.04) 0%, transparent 70%)' }} />
+      </div>
+      <div className="cyber-grid" style={{ position: 'absolute', inset: 0, opacity: 0.12, pointerEvents: 'none' }} />
+
+      {/* Navbar */}
       <nav style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        height: 64,
-        display: 'flex',
-        alignItems: 'center',
-        background: 'var(--nav-bg-scrolled)',
-        borderBottom: '1px solid var(--nav-border-scrolled)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        position: 'sticky', top: 0, zIndex: 100, height: 64,
+        display: 'flex', alignItems: 'center',
+        background: 'rgba(2,6,23,0.9)',
+        borderBottom: '1px solid rgba(99,102,241,0.15)',
+        backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
       }}>
-        <div style={{
-          maxWidth: 1200, margin: '0 auto', padding: '0 32px',
-          width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 32px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 0, textDecoration: 'none' }}>
             <div style={{ width: 40, height: 40, position: 'relative', flexShrink: 0 }}>
               <Image src="/aritaro-logo.png" alt="Aritaro" fill sizes="40px" style={{ objectFit: 'contain' }} priority />
             </div>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 600, letterSpacing: '0.05em', color: 'var(--text-primary)' }}>ARITARO</span>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 700, letterSpacing: '0.07em', color: '#E2E8F0' }}>ARITARO</span>
           </Link>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            {/* Cart icon */}
-            <button
-              onClick={toggleCart}
-              style={{
-                position: 'relative',
-                background: 'none',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: 10,
-                padding: '8px 12px',
-                cursor: 'pointer',
-                color: 'var(--text-muted)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                transition: 'all 0.15s',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--cta)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <button onClick={toggleCart} style={{ position: 'relative', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 10, padding: '8px 14px', cursor: 'pointer', color: '#818CF8', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.2s ease', fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600 }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(99,102,241,0.15)'; e.currentTarget.style.borderColor = 'rgba(99,102,241,0.4)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(99,102,241,0.08)'; e.currentTarget.style.borderColor = 'rgba(99,102,241,0.2)'; }}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
-              </svg>
-              {cartItems.length > 0 && (
-                <span style={{
-                  position: 'absolute',
-                  top: -6, right: -6,
-                  background: '#FF3D5A',
-                  color: '#fff',
-                  fontSize: 10,
-                  fontWeight: 700,
-                  width: 18, height: 18,
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  {cartItems.length}
-                </span>
-              )}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+              Quote {cartItems.length > 0 && <span style={{ background: '#FF3D5A', color: '#fff', fontSize: 10, fontWeight: 700, width: 18, height: 18, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 2 }}>{cartItems.length}</span>}
             </button>
 
-            {/* User badge */}
             {user ? (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                background: 'var(--bg-elevated)',
-                border: '1px solid var(--border-subtle)',
-                borderRadius: 100,
-                padding: '4px 14px 4px 4px',
-              }}>
-                <div style={{
-                  width: 28, height: 28,
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #6366F1, #818CF8)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff',
-                  fontSize: 12,
-                  fontWeight: 700,
-                }}>
-                  {user.avatar}
-                </div>
-                <span style={{ fontSize: 13, color: 'var(--text-primary)', fontWeight: 500 }}>
-                  {user.name}
-                </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 100, padding: '5px 14px 5px 5px' }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#6366F1,#818CF8)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 12, fontWeight: 700 }}>{user.avatar}</div>
+                <span style={{ fontSize: 13, color: '#E2E8F0', fontWeight: 500, fontFamily: 'var(--font-sans)' }}>{user.name}</span>
               </div>
             ) : (
-              <button
-                onClick={() => setLoginOpen(true)}
-                style={{
-                  fontSize: 13,
-                  fontWeight: 500,
-                  color: 'var(--text-muted)',
-                  textDecoration: 'none',
-                  padding: '7px 14px',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 8,
-                  transition: 'all 0.15s',
-                  fontFamily: 'var(--font-sans)',
-                  background: 'none',
-                  cursor: 'pointer',
-                }}
+              <button onClick={() => setLoginOpen(true)} style={{ fontSize: 13, fontWeight: 600, color: '#818CF8', padding: '8px 18px', border: '1px solid rgba(99,102,241,0.3)', borderRadius: 10, background: 'rgba(99,102,241,0.06)', cursor: 'pointer', fontFamily: 'var(--font-sans)', transition: 'all 0.2s ease' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(99,102,241,0.15)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(99,102,241,0.06)'; }}
               >
                 Login
               </button>
@@ -230,333 +224,98 @@ export default function ServicesPage() {
         </div>
       </nav>
 
-      {/* Hero header */}
-      <section style={{
-        position: 'relative',
-        padding: '80px 24px 60px',
-        textAlign: 'center',
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(99,102,241,0.06) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
-        <div className="cyber-grid" style={{ position: 'absolute', inset: 0, opacity: 0.4, pointerEvents: 'none' }} />
-
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 680, margin: '0 auto' }}>
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: 'var(--glass-bg)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: 100, padding: '6px 20px',
-            marginBottom: 22,
-            backdropFilter: 'blur(12px)',
-          }}>
-            <span style={{
-              width: 6, height: 6, borderRadius: '50%',
-              background: 'var(--cyan-primary)',
-              boxShadow: '0 0 8px rgba(99,102,241,0.5)',
-              animation: 'pulse-glow 2s ease-in-out infinite',
-            }} />
-            <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 10, letterSpacing: '2.5px',
-              color: 'var(--hero-badge-text)', fontWeight: 600,
-            }}>ALL SERVICES</span>
-          </div>
-
-          <h1 style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: 'clamp(28px, 5vw, 48px)',
-            fontWeight: 900,
-            lineHeight: 1.1,
-            color: 'var(--text-primary)',
-            marginBottom: 16,
-          }}>
-            Our{' '}
-            <span style={{
-              background: 'linear-gradient(135deg, #6366F1, #818CF8)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}>complete</span>{' '}
-            capabilities
-          </h1>
-
-          <p style={{
-            maxWidth: 540, margin: '0 auto',
-            color: 'var(--text-muted)',
-            fontSize: 16, lineHeight: 1.75,
-          }}>
-            Browse and select the services your organization needs. Add them to your quote
-            and we&apos;ll put together a tailored protection plan.
-          </p>
+      {/* Hero */}
+      <section style={{ padding: '80px 24px 60px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.25)', borderRadius: 100, padding: '6px 20px', marginBottom: 24, backdropFilter: 'blur(8px)' }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#6366F1', boxShadow: '0 0 8px rgba(99,102,241,0.8)', animation: 'pulse-glow 2s ease-in-out infinite' }} />
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '2.5px', color: '#818CF8', fontWeight: 600 }}>FULL SERVICE CATALOG</span>
         </div>
+
+        <h1 style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(30px,5vw,52px)', fontWeight: 900, lineHeight: 1.1, color: '#F1F5F9', marginBottom: 16 }}>
+          Our{' '}
+          <span style={{ background: 'linear-gradient(135deg,#6366F1,#818CF8,#22D3EE)', backgroundClip: 'text', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>complete</span>
+          {' '}capabilities
+        </h1>
+        <p style={{ maxWidth: 520, margin: '0 auto', color: '#475569', fontSize: 16, lineHeight: 1.75 }}>
+          Browse, select, and quote any service. {!user && <span style={{ color: '#818CF8' }}>Sign in to add services to your quote.</span>}
+        </p>
       </section>
 
       {/* Category filter */}
-      <div style={{
-        maxWidth: 1280, margin: '0 auto', padding: '0 24px 40px',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: 8,
-        flexWrap: 'wrap',
-      }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 48px', display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap', position: 'relative', zIndex: 1 }}>
         {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            style={{
-              padding: '8px 20px',
-              borderRadius: 100,
-              border: activeCategory === cat ? '1px solid var(--cta)' : '1px solid var(--border-subtle)',
-              background: activeCategory === cat ? 'rgba(99,102,241,0.1)' : 'transparent',
-              color: activeCategory === cat ? 'var(--cta)' : 'var(--text-muted)',
-              cursor: 'pointer',
-              fontSize: 13,
-              fontWeight: 500,
-              fontFamily: 'var(--font-sans)',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              if (activeCategory !== cat) {
-                e.currentTarget.style.borderColor = 'var(--cta)';
-                e.currentTarget.style.color = 'var(--text-primary)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeCategory !== cat) {
-                e.currentTarget.style.borderColor = 'var(--border-subtle)';
-                e.currentTarget.style.color = 'var(--text-muted)';
-              }
-            }}
-          >
+          <button key={cat} onClick={() => setActiveCategory(cat)} style={{
+            padding: '9px 22px', borderRadius: 100, cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600,
+            transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+            border: activeCategory === cat ? '1px solid rgba(99,102,241,0.5)' : '1px solid rgba(51,65,85,0.6)',
+            background: activeCategory === cat ? 'rgba(99,102,241,0.15)' : 'rgba(15,23,42,0.5)',
+            color: activeCategory === cat ? '#818CF8' : '#475569',
+            boxShadow: activeCategory === cat ? '0 0 20px rgba(99,102,241,0.15)' : 'none',
+          }}>
             {cat}
           </button>
         ))}
       </div>
 
-      {/* Services grid — narrower cards, more height */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 80px' }}>
-        <div className="services-page-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-          gap: 20,
-        }}>
-          {filtered.map((service) => {
-            const isThreat = service.color === '#FF3D5A';
-            const inCart = isInCart(service.number);
-
-            return (
-              <div
-                key={service.number}
-                className="s-card"
-                style={{
-                  position: 'relative',
-                  background: 'var(--bg-surface)',
-                  border: '1px solid var(--service-card-border)',
-                  borderRadius: 16,
-                  padding: '30px 22px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'all 0.25s ease',
-                  boxShadow: 'var(--service-card-shadow)',
-                  minHeight: 380,
-                }}
-              >
-                {/* Category tag */}
-                <span style={{
-                  position: 'absolute',
-                  top: 16,
-                  right: 16,
-                  fontSize: 10,
-                  fontWeight: 600,
-                  letterSpacing: '1px',
-                  color: isThreat ? '#FF3D5A' : 'var(--cta)',
-                  background: isThreat ? 'rgba(255,61,90,0.08)' : 'rgba(99,102,241,0.08)',
-                  border: `1px solid ${isThreat ? 'rgba(255,61,90,0.15)' : 'rgba(99,102,241,0.15)'}`,
-                  borderRadius: 100,
-                  padding: '3px 10px',
-                  fontFamily: 'var(--font-mono)',
-                }}>
-                  {service.category}
-                </span>
-
-                {/* Number badge */}
-                <span style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 9, fontWeight: 700,
-                  color: isThreat ? 'rgba(255,61,90,0.4)' : 'rgba(99,102,241,0.35)',
-                  letterSpacing: '1px',
-                  marginBottom: 14,
-                }}>{service.number}</span>
-
-                {/* Icon */}
-                <div style={{
-                  width: 46, height: 46,
-                  borderRadius: 10,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: service.color,
-                  background: isThreat ? 'rgba(255,61,90,0.06)' : 'rgba(99,102,241,0.07)',
-                  border: `1px solid ${isThreat ? 'rgba(255,61,90,0.15)' : 'rgba(99,102,241,0.15)'}`,
-                  marginBottom: 18,
-                }}>
-                  {serviceIcons[service.number]}
-                </div>
-
-                {/* Title */}
-                <h3 style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 15,
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                  marginBottom: 10,
-                  lineHeight: 1.35,
-                }}>{service.title}</h3>
-
-                {/* Description */}
-                <p style={{
-                  fontSize: 13,
-                  color: 'var(--text-muted)',
-                  lineHeight: 1.7,
-                  marginBottom: 18,
-                  flex: 1,
-                }}>{service.desc}</p>
-
-                {/* Features */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 18 }}>
-                  {service.features.map((f) => (
-                    <span
-                      key={f}
-                      className="feature-tag"
-                      style={isThreat ? {
-                        background: 'rgba(255,61,90,0.05)',
-                        borderColor: 'rgba(255,61,90,0.14)',
-                        color: '#FF3D5A',
-                      } : {}}
-                    >{f}</span>
-                  ))}
-                </div>
-
-                {/* Price */}
-                <div style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  marginBottom: 16,
-                  fontFamily: 'var(--font-mono)',
-                }}>
-                  {service.price}
-                </div>
-
-                {/* Divider */}
-                <div style={{
-                  height: 1,
-                  background: isThreat
-                    ? 'linear-gradient(90deg, rgba(255,61,90,0.2), transparent 70%)'
-                    : 'linear-gradient(90deg, rgba(99,102,241,0.15), transparent 70%)',
-                  marginBottom: 16,
-                }} />
-
-                {/* Add to cart button */}
-                <button
-                  onClick={() => handleAddToCart(service)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                    padding: '12px',
-                    borderRadius: 10,
-                    border: inCart
-                      ? '1px solid rgba(74,222,128,0.3)'
-                      : `1px solid ${isThreat ? 'rgba(255,61,90,0.3)' : 'rgba(99,102,241,0.3)'}`,
-                    background: inCart
-                      ? 'rgba(74,222,128,0.08)'
-                      : 'transparent',
-                    color: inCart
-                      ? '#4ADE80'
-                      : isThreat ? '#FF3D5A' : 'var(--cta)',
-                    cursor: inCart ? 'default' : 'pointer',
-                    fontSize: 13,
-                    fontWeight: 600,
-                    fontFamily: 'var(--font-sans)',
-                    transition: 'all 0.2s',
-                    width: '100%',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!inCart) {
-                      e.currentTarget.style.background = isThreat ? 'rgba(255,61,90,0.08)' : 'rgba(99,102,241,0.08)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!inCart) {
-                      e.currentTarget.style.background = 'transparent';
-                    }
-                  }}
-                >
-                  {inCart ? (
-                    <>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                      Added to Quote
-                    </>
-                  ) : (
-                    <>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                        <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-                        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
-                      </svg>
-                      Add to Quote
-                    </>
-                  )}
-                </button>
-              </div>
-            );
-          })}
+      {/* Grid */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 100px', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 22 }}>
+          {filtered.map((service, i) => (
+            <ServiceCard
+              key={service.number}
+              service={service}
+              inCart={isInCart(service.number)}
+              onAdd={() => handleAdd(service)}
+              index={i}
+            />
+          ))}
         </div>
+
+        {/* Not logged in banner */}
+        {!user && (
+          <div style={{
+            marginTop: 60, padding: '36px 40px',
+            background: 'rgba(99,102,241,0.06)',
+            border: '1px solid rgba(99,102,241,0.2)',
+            borderRadius: 20, textAlign: 'center',
+            backdropFilter: 'blur(8px)',
+          }}>
+            <div style={{ fontSize: 28, marginBottom: 12 }}>🔒</div>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: '#E2E8F0', marginBottom: 8, fontFamily: 'var(--font-sans)' }}>Sign in to build your quote</h3>
+            <p style={{ fontSize: 14, color: '#475569', marginBottom: 24, lineHeight: 1.6 }}>Create a free account to add services, get custom pricing, and request a tailored security plan.</p>
+            <button onClick={() => setLoginOpen(true)} className="btn-primary" style={{ fontSize: 14, padding: '13px 32px', margin: '0 auto' }}>
+              Sign In / Create Account
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Back to home — NO MembershipSection */}
-      <div style={{
-        textAlign: 'center',
-        padding: '60px 24px',
-        background: 'var(--bg-base)',
-      }}>
-        <Link href="/" style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 8,
-          fontSize: 14,
-          color: 'var(--text-muted)',
-          textDecoration: 'none',
-          transition: 'color 0.15s',
-          padding: '12px 24px',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 10,
-        }}>
+      {/* Back link */}
+      <div style={{ textAlign: 'center', padding: '0 24px 60px', position: 'relative', zIndex: 1 }}>
+        <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: '#334155', textDecoration: 'none', padding: '10px 22px', border: '1px solid rgba(51,65,85,0.5)', borderRadius: 10, transition: 'all 0.2s ease', fontFamily: 'var(--font-sans)' }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(99,102,241,0.3)'; e.currentTarget.style.color = '#818CF8'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(51,65,85,0.5)'; e.currentTarget.style.color = '#334155'; }}
+        >
           ← Back to Home
         </Link>
       </div>
 
-      <ThemeToggle />
-
-      {/* Login Modal */}
       <LoginModal
         isOpen={loginOpen}
         onClose={() => setLoginOpen(false)}
-        message="Sign in to add services to your quote and access the full catalog."
+        message="Sign in to add services to your quote and unlock custom pricing."
+        onSuccess={() => setLoginOpen(false)}
       />
 
       <style>{`
+        @keyframes floatOrb {
+          0%,100% { transform: translate(0,0) scale(1); }
+          50% { transform: translate(30px,-20px) scale(1.05); }
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         @media (max-width: 640px) {
-          .services-page-grid {
-            grid-template-columns: 1fr !important;
-          }
+          .services-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>

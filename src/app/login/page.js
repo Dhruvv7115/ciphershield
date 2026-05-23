@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/components/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ const features = [
   { icon: '🌐', title: 'Global Coverage', desc: 'Operations across 40+ countries, always-on protection' },
 ];
 
-export default function LoginPage() {
+function LoginContent() {
   const { user, login, signup } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -552,5 +552,18 @@ export default function LoginPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#020617' }}>
+        <div style={{ width: 36, height: 36, border: '3px solid rgba(99,102,241,0.2)', borderTopColor: '#6366F1', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }

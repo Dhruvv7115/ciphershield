@@ -12,10 +12,11 @@ gsap.registerPlugin(ScrollTrigger);
 const services = [
   {
     number: '01',
-    title: 'AI Business Process Automation',
-    desc: 'Transform manual workflows into intelligent, AI-driven processes that cut costs, eliminate errors, and scale operations 10× faster.',
-    features: ['Workflow Orchestration', 'Smart Triggers', 'Data Pipelines', 'ROI Analytics'],
-    color: '#6366F1',
+    title: 'API Penetration Testing',
+    desc: 'Deep, manual and automated testing of REST, GraphQL, gRPC & SOAP APIs. OWASP API Security Top 10 coverage with code-level remediation.',
+    features: ['REST/GraphQL', 'JWT/OAuth', 'BOLA/IDOR', 'OWASP API Top 10'],
+    color: '#3B82F6',
+    href: '/services/api-pt',
     icon: (
       <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
         <rect x="3" y="3" width="22" height="22" rx="4" stroke="currentColor" strokeWidth="1.5" />
@@ -26,98 +27,11 @@ const services = [
   },
   {
     number: '02',
-    title: 'Chatbot Development',
-    desc: 'Deploy intelligent chatbots across Web, WhatsApp, and support channels that understand context and convert visitors 24/7.',
-    features: ['Multi-Platform', 'NLP Powered', 'WhatsApp API', 'Live Analytics'],
-    color: '#818CF8',
-    icon: (
-      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-        <path d="M4 6a3 3 0 013-3h14a3 3 0 013 3v10a3 3 0 01-3 3H10l-4 4v-4H7a3 3 0 01-3-3V6z" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="10" cy="11" r="1.2" fill="currentColor" />
-        <circle cx="14" cy="11" r="1.2" fill="currentColor" />
-        <circle cx="18" cy="11" r="1.2" fill="currentColor" />
-      </svg>
-    ),
-  },
-  {
-    number: '03',
-    title: 'AI Agents for Repetitive Workflows',
-    desc: 'Deploy autonomous AI agents that handle repetitive tasks — from data entry to report generation — freeing your team for high-value work.',
-    features: ['Autonomous Execution', 'Multi-Step Reasoning', 'Tool Integration', 'Self-Learning'],
+    title: 'Web Application PT',
+    desc: 'Comprehensive OWASP-based security assessment of web applications. Manual, logic-aware testing that finds what automated scanners miss.',
+    features: ['OWASP Top 10', 'Auth Bypass', 'Business Logic', 'XSS/SQLi'],
     color: '#6366F1',
-    icon: (
-      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-        <circle cx="14" cy="10" r="5" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M14 15v5M10 25a7 7 0 0114 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        <circle cx="14" cy="10" r="2" fill="currentColor" opacity="0.3" />
-        <path d="M20 6l3-3M8 6L5 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    number: '04',
-    title: 'GPT-Powered Enterprise Tools',
-    desc: 'Custom GPT-powered tools for your company — smart document analysis, automated communications, and intelligent decision support.',
-    features: ['Custom Fine-Tuning', 'API Integration', 'Doc Intelligence', 'Secure Deploy'],
-    color: '#818CF8',
-    icon: (
-      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-        <rect x="5" y="3" width="18" height="22" rx="3" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M9 8h10M9 12h7M9 16h10M9 20h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-        <circle cx="22" cy="22" r="4" stroke="currentColor" strokeWidth="1.5" fill="none" />
-        <path d="M21 22l1 1 2-2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
-  {
-    number: '05',
-    title: 'Internal Knowledge Assistants',
-    desc: 'Build a company knowledge bot that instantly answers employee questions by learning from your docs, SOPs, and knowledge base.',
-    features: ['RAG Architecture', 'Knowledge Indexing', 'Role-Based Access', 'Continuous Learning'],
-    color: '#818CF8',
-    icon: (
-      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-        <circle cx="14" cy="14" r="10" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
-        <path d="M14 4v6M14 18v6M4 14h6M18 14h6" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
-        <circle cx="14" cy="14" r="1.5" fill="currentColor" />
-      </svg>
-    ),
-  },
-  {
-    number: '06',
-    title: 'AI Content Generation Pipelines',
-    desc: 'End-to-end content pipelines powered by AI — blog posts, product descriptions, social media, and marketing copy at scale.',
-    features: ['Multi-Format', 'Brand Voice', 'SEO Optimized', 'Batch Processing'],
-    color: '#6366F1',
-    icon: (
-      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-        <path d="M4 7a2 2 0 012-2h16a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M8 10l4 3-4 3M14 16h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
-  {
-    number: '07',
-    title: 'Cybersecurity Audits & Pen Testing',
-    desc: 'Military-grade penetration testing and security audits to identify vulnerabilities before adversaries exploit them. Zero-trust methodology.',
-    features: ['Red Teaming', 'VAPT', 'Compliance', 'Threat Modeling'],
-    color: '#FF3D5A',
-    icon: (
-      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-        <path d="M14 3L4 7v8c0 5.25 4.4 9.8 10 11 5.6-1.2 10-5.75 10-11V7L14 3z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <circle cx="14" cy="13" r="3" stroke="currentColor" strokeWidth="1.2" />
-        <path d="M14 10v-3M14 19v-3M11 13H8M20 13h-3" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.6" />
-        <circle cx="14" cy="13" r="1" fill="currentColor" />
-      </svg>
-    ),
-  },
-  {
-    number: '08',
-    title: 'Web Development Services',
-    desc: 'Premium web applications and digital platforms built with cutting-edge tech — performant, secure, and designed to convert.',
-    features: ['Next.js / React', 'API Integration', 'Performance', 'SEO & Security'],
-    color: '#818CF8',
+    href: '/services/wap-pt',
     icon: (
       <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
         <rect x="2" y="5" width="24" height="18" rx="3" stroke="currentColor" strokeWidth="1.5" />
@@ -126,6 +40,36 @@ const services = [
         <circle cx="9.5" cy="7.5" r="1" fill="currentColor" opacity="0.5" />
         <circle cx="13" cy="7.5" r="1" fill="currentColor" opacity="0.5" />
         <path d="M8 17l3-3 3 3 4-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    number: '03',
+    title: 'Cloud Security Assessment',
+    desc: 'Adversarial review of AWS, Azure & GCP environments. Identify misconfigurations, exposed storage, and over-privileged IAM policies.',
+    features: ['AWS/Azure/GCP', 'IAM Review', 'CIS Benchmarks', 'Attack Paths'],
+    color: '#818CF8',
+    href: '/services/cloud',
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+        <path d="M20 13h-1.26A7.5 7.5 0 108 19h12a4.5 4.5 0 000-9z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M14 3L4 7v8c0 5.25 4.4 9.8 10 11 5.6-1.2 10-5.75 10-11V7L14 3z" stroke="currentColor" strokeWidth="1" opacity="0.2" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    number: '04',
+    title: 'AI Penetration Testing',
+    desc: 'Dedicated AI/LLM security testing — prompt injection, data exfiltration, model attacks & agentic AI security. One of few firms in India.',
+    features: ['LLM Top 10', 'Prompt Injection', 'RAG Poisoning', 'Agent Security'],
+    color: '#A855F7',
+    href: '/services/ai-pt',
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+        <circle cx="14" cy="14" r="10" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" />
+        <path d="M14 4v6M14 18v6M4 14h6M18 14h6" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
+        <circle cx="14" cy="14" r="1.5" fill="currentColor" />
       </svg>
     ),
   },
@@ -149,8 +93,8 @@ function SpringTiltCard({ service, cardRef: externalRef }) {
     glowX: 50, glowY: 50,
   });
 
-  const isThreat = service.color === '#FF3D5A';
-  const accentRGB = isThreat ? '255,61,90' : '99,102,241';
+  const isThreat = false;
+  const accentRGB = '99,102,241';
 
   /* spring loop — runs only while hovered */
   const springLoop = useCallback(() => {
@@ -296,7 +240,7 @@ function SpringTiltCard({ service, cardRef: externalRef }) {
         <span style={{
           fontFamily: 'var(--font-mono)',
           fontSize: 9, fontWeight: 700,
-          color: isThreat ? 'rgba(255,61,90,0.4)' : 'rgba(99,102,241,0.35)',
+          color: 'rgba(99,102,241,0.35)',
           letterSpacing: '1px',
           display: 'block',
           marginBottom: 12,
@@ -314,8 +258,8 @@ function SpringTiltCard({ service, cardRef: externalRef }) {
             alignItems: 'center',
             justifyContent: 'center',
             color: service.color,
-            background: isThreat ? 'rgba(255,61,90,0.06)' : 'rgba(99,102,241,0.07)',
-            border: `1px solid ${isThreat ? 'rgba(255,61,90,0.15)' : 'rgba(99,102,241,0.15)'}`,
+            background: 'rgba(99,102,241,0.07)',
+            border: '1px solid rgba(99,102,241,0.15)',
             marginBottom: 16,
             transition: 'all 0.35s ease',
           }}
@@ -351,11 +295,7 @@ function SpringTiltCard({ service, cardRef: externalRef }) {
             <span
               key={f}
               className="feature-tag"
-              style={isThreat ? {
-                background: 'rgba(255,61,90,0.05)',
-                borderColor: 'rgba(255,61,90,0.14)',
-                color: '#FF3D5A',
-              } : {}}
+              style={{}}
             >
               {f}
             </span>
@@ -365,9 +305,7 @@ function SpringTiltCard({ service, cardRef: externalRef }) {
         {/* Bottom accent line */}
         <div style={{
           marginTop: 18, height: 1,
-          background: isThreat
-            ? 'linear-gradient(90deg, rgba(255,61,90,0.25), transparent 70%)'
-            : 'linear-gradient(90deg, rgba(99,102,241,0.2), transparent 70%)',
+          background: 'linear-gradient(90deg, rgba(99,102,241,0.2), transparent 70%)',
         }} />
       </div>
     </div>
@@ -451,7 +389,7 @@ export default function ServicesSection() {
               fontSize: 10, letterSpacing: '2.5px',
               color: 'var(--hero-badge-text)', fontWeight: 600,
             }}>
-              CAPABILITIES
+              OFFENSIVE SECURITY
             </span>
           </div>
 
@@ -463,7 +401,7 @@ export default function ServicesSection() {
             color: 'var(--text-primary)',
             marginBottom: 18,
           }}>
-            Intelligence that{' '}
+            Security that{' '}
             <span style={{
               background: 'linear-gradient(135deg, #6366F1 0%, #818CF8 60%, #6366F1 100%)',
               backgroundClip: 'text',
@@ -471,7 +409,7 @@ export default function ServicesSection() {
               WebkitTextFillColor: 'transparent',
               filter: 'drop-shadow(0 0 12px rgba(99,102,241,0.35))',
             }}>
-              transforms
+              protects
             </span>
           </h2>
 
@@ -480,19 +418,24 @@ export default function ServicesSection() {
             color: 'var(--text-muted)',
             fontSize: 16, lineHeight: 1.75,
           }}>
-            From intelligent automation to military-grade cybersecurity — we build the systems
-            that give your business an unfair, unbeatable advantage.
+            Expert penetration testing across APIs, web applications, cloud infrastructure, and AI systems —
+            certified, transparent, and built for India&apos;s most security-conscious enterprises.
           </p>
         </div>
 
-        {/* Cards grid — show only first 3 on homepage */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18 }} className="services-grid">
-          {services.slice(0, 3).map((service, i) => (
-            <SpringTiltCard
+        {/* Cards grid — show all 4 services */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18 }} className="services-grid">
+          {services.map((service, i) => (
+            <a
               key={service.number}
-              service={service}
-              cardRef={(el) => { cardsRef.current[i] = el; }}
-            />
+              href={service.href}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <SpringTiltCard
+                service={service}
+                cardRef={(el) => { cardsRef.current[i] = el; }}
+              />
+            </a>
           ))}
         </div>
 
@@ -528,21 +471,18 @@ export default function ServicesSection() {
             position: 'relative',
             zIndex: 1,
           }}>
-            Explore{' '}
+            Need a{' '}
             <span style={{ color: '#818CF8', fontWeight: 600 }}>
-              {services.slice(3).length} more services
+              custom security assessment
             </span>
-            {' '}— cybersecurity audits, web development,<br />
-            AI content pipelines, and enterprise tools.
+            ? We scope engagements to your exact needs —<br />
+            from single API testing to full red team operations.
           </p>
 
           <button
             onClick={() => {
-              if (user) {
-                router.push('/services');
-              } else {
-                setLoginOpen(true);
-              }
+              const el = document.querySelector('#contact');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
             style={{
               position: 'relative',
@@ -572,28 +512,11 @@ export default function ServicesSection() {
               e.currentTarget.style.boxShadow = '0 6px 28px rgba(99,102,241,0.4)';
             }}
           >
-            {user ? 'View All Services' : 'Sign In to View All Services'}
+            Book Free Assessment
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
-
-          {!user && (
-            <span style={{
-              position: 'relative', zIndex: 1,
-              fontSize: 12,
-              color: '#334155',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              fontFamily: 'var(--font-sans)',
-            }}>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" />
-              </svg>
-              Free account · No credit card required
-            </span>
-          )}
         </div>
       </div>
 

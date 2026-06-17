@@ -8,21 +8,21 @@ import Image from 'next/image';
 import LoginModal from '@/components/LoginModal';
 
 const icons = {
-  '01': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="3" y="3" width="22" height="22" rx="4" stroke="currentColor" strokeWidth="1.5"/><path d="M8 14h4l2-4 2 6 2-3h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="21" cy="7" r="3" fill="currentColor" opacity="0.3"/></svg>,
-  '02': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M4 6a3 3 0 013-3h14a3 3 0 013 3v10a3 3 0 01-3 3H10l-4 4v-4H7a3 3 0 01-3-3V6z" stroke="currentColor" strokeWidth="1.5"/><circle cx="10" cy="11" r="1.2" fill="currentColor"/><circle cx="14" cy="11" r="1.2" fill="currentColor"/><circle cx="18" cy="11" r="1.2" fill="currentColor"/></svg>,
-  '03': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="10" r="5" stroke="currentColor" strokeWidth="1.5"/><path d="M14 15v5M10 25a7 7 0 0114 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="14" cy="10" r="2" fill="currentColor" opacity="0.3"/></svg>,
-  '04': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="5" y="3" width="18" height="22" rx="3" stroke="currentColor" strokeWidth="1.5"/><path d="M9 8h10M9 12h7M9 16h10M9 20h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
-  '05': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" strokeWidth="1.5"/><circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1"/><circle cx="14" cy="14" r="1.5" fill="currentColor"/></svg>,
-  '06': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M4 7a2 2 0 012-2h16a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" stroke="currentColor" strokeWidth="1.5"/><path d="M8 10l4 3-4 3M14 16h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  '07': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M14 3L4 7v8c0 5.25 4.4 9.8 10 11 5.6-1.2 10-5.75 10-11V7L14 3z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="14" cy="13" r="3" stroke="currentColor" strokeWidth="1.2"/><circle cx="14" cy="13" r="1" fill="currentColor"/></svg>,
-  '08': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="2" y="5" width="24" height="18" rx="3" stroke="currentColor" strokeWidth="1.5"/><path d="M2 10h24" stroke="currentColor" strokeWidth="1" opacity="0.5"/><path d="M8 17l3-3 3 3 4-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  '01': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="3" y="3" width="22" height="22" rx="4" stroke="currentColor" strokeWidth="1.5" /><path d="M8 14h4l2-4 2 6 2-3h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /><circle cx="21" cy="7" r="3" fill="currentColor" opacity="0.3" /></svg>,
+  '02': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M4 6a3 3 0 013-3h14a3 3 0 013 3v10a3 3 0 01-3 3H10l-4 4v-4H7a3 3 0 01-3-3V6z" stroke="currentColor" strokeWidth="1.5" /><circle cx="10" cy="11" r="1.2" fill="currentColor" /><circle cx="14" cy="11" r="1.2" fill="currentColor" /><circle cx="18" cy="11" r="1.2" fill="currentColor" /></svg>,
+  '03': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="10" r="5" stroke="currentColor" strokeWidth="1.5" /><path d="M14 15v5M10 25a7 7 0 0114 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /><circle cx="14" cy="10" r="2" fill="currentColor" opacity="0.3" /></svg>,
+  '04': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="5" y="3" width="18" height="22" rx="3" stroke="currentColor" strokeWidth="1.5" /><path d="M9 8h10M9 12h7M9 16h10M9 20h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" /></svg>,
+  '05': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" strokeWidth="1.5" /><circle cx="14" cy="14" r="4" stroke="currentColor" strokeWidth="1.2" fill="currentColor" fillOpacity="0.1" /><circle cx="14" cy="14" r="1.5" fill="currentColor" /></svg>,
+  '06': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M4 7a2 2 0 012-2h16a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V7z" stroke="currentColor" strokeWidth="1.5" /><path d="M8 10l4 3-4 3M14 16h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>,
+  '07': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><path d="M14 3L4 7v8c0 5.25 4.4 9.8 10 11 5.6-1.2 10-5.75 10-11V7L14 3z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" /><circle cx="14" cy="13" r="3" stroke="currentColor" strokeWidth="1.2" /><circle cx="14" cy="13" r="1" fill="currentColor" /></svg>,
+  '08': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="2" y="5" width="24" height="18" rx="3" stroke="currentColor" strokeWidth="1.5" /><path d="M2 10h24" stroke="currentColor" strokeWidth="1" opacity="0.5" /><path d="M8 17l3-3 3 3 4-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>,
 };
 
 function ServiceCard({ service, inCart, onAdd, index }) {
   const ref = useRef(null);
   const glowRef = useRef(null);
   const [visible, setVisible] = useState(false);
-  const isThreat = service.color === '#FF3D5A';
+  const isThreat = false;
   const rgb = isThreat ? '255,61,90' : '99,102,241';
 
   useEffect(() => {
@@ -139,9 +139,9 @@ function ServiceCard({ service, inCart, onAdd, index }) {
           onMouseLeave={(e) => { if (!inCart) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = `rgba(${rgb},0.3)`; } }}
         >
           {inCart ? (
-            <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Added to Quote</>
+            <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>Added to Quote</>
           ) : (
-            <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>Add to Quote</>
+            <><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" /></svg>Add to Quote</>
           )}
         </button>
       </div>
@@ -174,7 +174,7 @@ export default function ServicesPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#020617', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: '#000000ff', position: 'relative', overflow: 'hidden' }}>
       {/* BG orbs */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         <div style={{ position: 'absolute', top: '-15%', left: '20%', width: '60%', height: '50%', borderRadius: '50%', background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%)', animation: 'floatOrb 14s ease-in-out infinite' }} />
@@ -182,47 +182,7 @@ export default function ServicesPage() {
       </div>
       <div className="cyber-grid" style={{ position: 'absolute', inset: 0, opacity: 0.12, pointerEvents: 'none' }} />
 
-      {/* Navbar */}
-      <nav style={{
-        position: 'sticky', top: 0, zIndex: 100, height: 64,
-        display: 'flex', alignItems: 'center',
-        background: 'rgba(2,6,23,0.9)',
-        borderBottom: '1px solid rgba(99,102,241,0.15)',
-        backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-      }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 32px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 0, textDecoration: 'none' }}>
-            <div style={{ width: 40, height: 40, position: 'relative', flexShrink: 0 }}>
-              <Image src="/aritaro-logo.png" alt="Aritaro" fill sizes="40px" style={{ objectFit: 'contain' }} priority />
-            </div>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 700, letterSpacing: '0.07em', color: '#E2E8F0' }}>ARITARO</span>
-          </Link>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <button onClick={toggleCart} style={{ position: 'relative', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 10, padding: '8px 14px', cursor: 'pointer', color: '#818CF8', display: 'flex', alignItems: 'center', gap: 7, transition: 'all 0.2s ease', fontFamily: 'var(--font-sans)', fontSize: 13, fontWeight: 600 }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(99,102,241,0.15)'; e.currentTarget.style.borderColor = 'rgba(99,102,241,0.4)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(99,102,241,0.08)'; e.currentTarget.style.borderColor = 'rgba(99,102,241,0.2)'; }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
-              Quote {cartItems.length > 0 && <span style={{ background: '#FF3D5A', color: '#fff', fontSize: 10, fontWeight: 700, width: 18, height: 18, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 2 }}>{cartItems.length}</span>}
-            </button>
-
-            {user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 100, padding: '5px 14px 5px 5px' }}>
-                <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#6366F1,#818CF8)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 12, fontWeight: 700 }}>{user.avatar}</div>
-                <span style={{ fontSize: 13, color: '#E2E8F0', fontWeight: 500, fontFamily: 'var(--font-sans)' }}>{user.name}</span>
-              </div>
-            ) : (
-              <button onClick={() => setLoginOpen(true)} style={{ fontSize: 13, fontWeight: 600, color: '#818CF8', padding: '8px 18px', border: '1px solid rgba(99,102,241,0.3)', borderRadius: 10, background: 'rgba(99,102,241,0.06)', cursor: 'pointer', fontFamily: 'var(--font-sans)', transition: 'all 0.2s ease' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(99,102,241,0.15)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(99,102,241,0.06)'; }}
-              >
-                Login
-              </button>
-            )}
-          </div>
-        </div>
-      </nav>
 
       {/* Hero */}
       <section style={{ padding: '80px 24px 60px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
@@ -285,7 +245,7 @@ export default function ServicesPage() {
             <p style={{ fontSize: 14, color: '#475569', marginBottom: 24, lineHeight: 1.6 }}>Create a free account to add services, get custom pricing, and request a tailored security plan.</p>
             <button onClick={() => setLoginOpen(true)} className="btn-primary" style={{ fontSize: 14, padding: '13px 32px', margin: '0 auto' }}>
               Sign In / Create Account
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </button>
           </div>
         )}

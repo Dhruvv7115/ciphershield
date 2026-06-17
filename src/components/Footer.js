@@ -3,10 +3,30 @@
 import Image from 'next/image';
 
 const footerLinks = {
-  Services: ['MDR', 'Cloud Security', 'Red Team', 'Identity & Access', 'OT/ICS Security', 'Incident Response'],
-  Company:  ['About Us', 'Leadership', 'Careers', 'Press', 'Partners', 'Contact'],
-  Resources:['Threat Intelligence', 'Research Blog', 'Case Studies', 'Documentation', 'Webinars', 'Security Advisories'],
-  Legal:    ['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'GDPR', 'Responsible Disclosure'],
+  Services: [
+    { label: 'API Pen Testing', href: '/services/api-pt' },
+    { label: 'Web App PT', href: '/services/wap-pt' },
+    { label: 'Cloud Security', href: '/services/cloud' },
+    { label: 'AI Pen Testing', href: '/services/ai-pt' },
+    { label: 'All Services', href: '/services' },
+    { label: 'Free Audit', href: '/free-audit' },
+  ],
+  Company: [
+    { label: 'About Us', href: '/about' },
+    { label: 'Case Studies', href: '/case-studies' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Contact', href: '/#contact' },
+  ],
+  Resources: [
+    { label: 'Free Security Audit', href: '/free-audit' },
+    { label: 'Case Studies', href: '/case-studies' },
+    { label: 'Blog', href: '/blog' },
+  ],
+  Legal: [
+    { label: 'Privacy Policy', href: '/legal/privacy' },
+    { label: 'Terms of Service', href: '/legal/terms' },
+    { label: 'Responsible Disclosure', href: '/legal/disclosure' },
+  ],
 };
 
 export default function Footer() {
@@ -142,9 +162,9 @@ export default function Footer() {
               </h4>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {links.map((link) => (
-                  <li key={link}>
+                  <li key={link.label}>
                     <a
-                      href="#"
+                      href={link.href}
                       style={{
                         fontSize: 14,
                         color: 'var(--text-muted)',
@@ -154,7 +174,7 @@ export default function Footer() {
                       onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--text-primary)'; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; }}
                     >
-                      {link}
+                      {link.label}
                     </a>
                   </li>
                 ))}

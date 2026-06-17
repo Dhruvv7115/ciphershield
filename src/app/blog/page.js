@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import ThemeToggle from '@/components/ThemeToggle';
+
 
 const blogPosts = [
   {
@@ -15,7 +15,7 @@ const blogPosts = [
     readTime: '8 min read',
     author: { name: 'Aritaro Research', avatar: 'A' },
     featured: true,
-    color: '#FF3D5A',
+    color: '#A855F7',
     image: null,
   },
   {
@@ -39,7 +39,7 @@ const blogPosts = [
     readTime: '10 min read',
     author: { name: 'Raj Malhotra', avatar: 'R' },
     featured: false,
-    color: '#FF3D5A',
+    color: '#A855F7',
     image: null,
   },
   {
@@ -87,7 +87,7 @@ const blogPosts = [
     readTime: '11 min read',
     author: { name: 'Aritaro SOC Team', avatar: 'A' },
     featured: false,
-    color: '#FF3D5A',
+    color: '#A855F7',
     image: null,
   },
   {
@@ -118,42 +118,7 @@ export default function BlogPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-base)' }}>
-      {/* Nav */}
-      <nav style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        height: 64,
-        display: 'flex',
-        alignItems: 'center',
-        background: 'var(--nav-bg-scrolled)',
-        borderBottom: '1px solid var(--nav-border-scrolled)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-      }}>
-        <div style={{
-          maxWidth: 1200, margin: '0 auto', padding: '0 32px',
-          width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 0, textDecoration: 'none' }}>
-            <div style={{ width: 40, height: 40, position: 'relative', flexShrink: 0 }}>
-              <Image src="/aritaro-logo.png" alt="Aritaro" fill sizes="40px" style={{ objectFit: 'contain' }} priority />
-            </div>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: 15, fontWeight: 600, letterSpacing: '0.05em', color: 'var(--text-primary)' }}>ARITARO</span>
-          </Link>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Link href="/" style={{
-              fontSize: 14, color: 'var(--text-muted)', textDecoration: 'none',
-              padding: '8px 14px', borderRadius: 6, transition: 'color 0.15s',
-              fontFamily: 'var(--font-sans)',
-            }}>Home</Link>
-            <Link href="/services" className="btn-primary" style={{ fontSize: 13, padding: '8px 20px', textDecoration: 'none' }}>
-              View Services
-            </Link>
-          </div>
-        </div>
-      </nav>
 
       {/* Hero */}
       <section style={{
@@ -534,7 +499,7 @@ export default function BlogPage() {
         </Link>
       </div>
 
-      <ThemeToggle />
+
 
       <style>{`
         @media (max-width: 860px) {

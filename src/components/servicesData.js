@@ -60,7 +60,7 @@ export const services = [
     title: 'Cybersecurity Audits & Pen Testing',
     desc: 'Military-grade penetration testing and security audits to identify vulnerabilities before adversaries exploit them. Zero-trust methodology.',
     features: ['Red Teaming', 'VAPT', 'Compliance', 'Threat Modeling'],
-    color: '#FF3D5A',
+    color: '#A855F7',
     price: 'From $7,999/engagement',
     category: 'Cybersecurity',
   },

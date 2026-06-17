@@ -201,8 +201,8 @@ export default function CartPanel() {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {items.map((item, i) => {
-                const isThreat = item.color === '#FF3D5A';
-                const accentColor = isThreat ? '#FF3D5A' : '#818CF8';
+                const isThreat = false;
+                const accentColor = '#818CF8';
                 return (
                   <div
                     key={item.number}
@@ -270,7 +270,7 @@ export default function CartPanel() {
                             transition: 'color 0.15s',
                             flexShrink: 0,
                           }}
-                          onMouseEnter={(e) => { e.currentTarget.style.color = '#FF3D5A'; }}
+                          onMouseEnter={(e) => { e.currentTarget.style.color = '#A855F7'; }}
                           onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(148,163,184,0.5)'; }}
                         >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -337,7 +337,7 @@ export default function CartPanel() {
                   border: 'none',
                   cursor: 'pointer',
                   fontSize: 12,
-                  color: '#FF3D5A',
+                  color: '#A855F7',
                   fontWeight: 500,
                   padding: '4px 8px',
                   borderRadius: 4,

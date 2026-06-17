@@ -3,6 +3,8 @@ import "./globals.css";
 import { AuthProvider } from "@/components/AuthContext";
 import { CartProvider } from "@/components/CartContext";
 import CartPanel from "@/components/CartPanel";
+import NavigationWrapper from "@/components/NavigationWrapper";
+import GlobalBackground from "@/components/GlobalBackground";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -41,6 +43,8 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           <CartProvider>
+            <GlobalBackground />
+            <NavigationWrapper />
             {children}
             <CartPanel />
           </CartProvider>

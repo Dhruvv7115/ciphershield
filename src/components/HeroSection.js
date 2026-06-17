@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import FloatingLines from './FloatingLines';
+import CertificationBadges from './CertificationBadges';
 
 export default function HeroSection() {
   const sectionRef = useRef(null);
@@ -85,7 +86,7 @@ export default function HeroSection() {
       <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
         {/* Section label */}
-        <div ref={labelRef}>
+        {/* <div ref={labelRef}>
           <div className="section-label">
             <span style={{
               width: 6, height: 6, borderRadius: '50%',
@@ -93,8 +94,8 @@ export default function HeroSection() {
               animation: 'pulse-glow 2s ease-in-out infinite',
             }} />
             AI-POWERED CYBERSECURITY
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
 
         {/* Main heading */}
         <h1
@@ -133,7 +134,7 @@ export default function HeroSection() {
         {/* CTA row */}
         <div
           ref={actionsRef}
-          style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 64 }}
+          style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 34 }}
         >
           <button
             className="btn-primary"
@@ -191,7 +192,8 @@ export default function HeroSection() {
             </span>
           ))}
         </div>
+        <CertificationBadges />
       </div>
-    </section>
+    </section >
   );
 }

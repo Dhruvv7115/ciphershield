@@ -1,8 +1,8 @@
 // src/lib/auth.ts
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import bcrypt from "bcryptjs";
 import User from "@/models/User";
+import connectDB from "@/lib/db";
 
 export const authOptions = {
 	// Use JWT strategy because we're using CredentialsProvider
@@ -26,19 +26,20 @@ export const authOptions = {
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials) {
+				await connectDB();
 				if (!credentials?.email || !credentials?.password) {
 					throw new Error("Email and password required");
 				}
 
-				const user = await User.findOne({
-					email: credentials.email,
-				});
+				const user = await User.findOne({ email: credentials.email }).select(
+					"+password",
+				);
 
 				if (!user || !user.password) {
 					throw new Error("No account found with this email");
 				}
 
-				const isValid = await user.comparePasswords(credentials.password);
+				const isValid = await user.comparePassword(credentials.password);
 
 				if (!isValid) {
 					throw new Error("Incorrect password");
@@ -93,31 +94,22 @@ export const authOptions = {
 		// Save user to database and attach data to JWT token
 		async jwt({ token, user }) {
 			if (user) {
-				// Save or update user in database for OAuth providers
-				const dbUser = await User.updateOne(
+				await connectDB();
+
+				await User.updateOne(
 					{ email: user.email || "" },
 					{
 						$set: {
-							firstName: user?.firstName || user.name?.split(" ")[0],
-							lastName:
-								user.lastName || user.name?.split(" ").slice(1).join(" "),
-							avatar: user.image || user.avatar,
-						},
-						$setOnInsert: {
-							email: user.email || "",
-							emailVerified: user.isVerified || false,
-							firstName: user.firstName || "",
-							lastName: user.lastName || "",
-							avatar: user.image || user.avatar,
+							avatar: user.image,
 						},
 					},
-					{
-						upsert: true,
-					},
+					{ upsert: true },
 				);
 
-				token.id = dbUser.id;
-				token.name = user.name;
+				const dbUser = await User.findOne({ email: user.email });
+
+				token.id = dbUser._id.toString();
+				token.name = dbUser.name;
 				token.avatar = dbUser.avatar;
 			}
 			return token;

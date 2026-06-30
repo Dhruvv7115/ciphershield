@@ -1,88 +1,106 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-import { securityHeaders } from "@/lib/security";
+import { getToken } from "next-auth/jwt";
+import { securityHeaders } from "@/lib/security.js";
 
 const publicRoutes = [
-  "/",
-  "/about",
-  "/services",
-  "/pricing",
-  "/case-studies",
-  "/blog",
-  "/resources",
-  "/contact",
-  "/free-audit",
-  "/login",
-  "/register",
-  "/forgot-password",
-  "/reset-password",
-  "/verify-email",
+	"/",
+	"/about",
+	"/services",
+	"/pricing",
+	"/case-studies",
+	"/blog",
+	"/resources",
+	"/contact",
+	"/free-audit",
+	"/login",
+	"/register",
+	"/forgot-password",
+	"/reset-password",
+	"/verify-email",
 ];
 
 const authRoutes = ["/login", "/register", "/forgot-password"];
 
 export async function proxy(request) {
-  const { pathname } = request.nextUrl;
+	const { pathname } = request.nextUrl;
 
-  const isPublicRoute = publicRoutes.some(
-    (route) => pathname === route || pathname.startsWith(`${route}/`)
-  );
-  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
-  const isApiRoute = pathname.startsWith("/api");
-  const isAdminRoute = pathname.startsWith("/admin");
-  const isDashboardRoute = pathname.startsWith("/dashboard");
+	const isPublicRoute = publicRoutes.some(
+		(route) => pathname === route || pathname.startsWith(`${route}/`),
+	);
+	const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+	const isApiRoute = pathname.startsWith("/api");
+	const isAdminLoginRoute = pathname === "/admin/login";
+	const isAdminRoute = pathname.startsWith("/admin");
+	const isAdminProtectedRoute = isAdminRoute && !isAdminLoginRoute;
+	const isDashboardRoute = pathname.startsWith("/dashboard");
 
-  if (isApiRoute) {
-    const response = NextResponse.next();
-    Object.entries(securityHeaders).forEach(([key, value]) => {
-      response.headers.set(key, value);
-    });
-    return response;
-  }
+	if (isApiRoute) {
+		const response = NextResponse.next();
+		Object.entries(securityHeaders).forEach(([key, value]) => {
+			response.headers.set(key, value);
+		});
+		return response;
+	}
 
-  const session = await auth();
-  const isLoggedIn = !!session?.user;
+	const token = await getToken({
+		req: request,
+		secret: process.env.NEXTAUTH_SECRET,
+	});
+	const isLoggedIn = !!token;
+	const role = token?.role;
 
-  if (isAuthRoute && isLoggedIn) {
-    const redirectUrl =
-      session.user.role === "admin" ? "/admin" : "/dashboard";
-    return NextResponse.redirect(new URL(redirectUrl, request.url));
-  }
+	// Already logged in — bounce away from auth pages
+	if (isAuthRoute && isLoggedIn) {
+		const redirectUrl = role === "admin" ? "/admin" : "/dashboard";
+		return NextResponse.redirect(new URL(redirectUrl, request.url));
+	}
 
-  // Redirect admin away from client dashboard root
-  if (isDashboardRoute && isLoggedIn && session.user.role === "admin") {
-    return NextResponse.redirect(new URL("/admin", request.url));
-  }
+	// Already logged in — bounce away from admin login
+	if (isAdminLoginRoute && isLoggedIn) {
+		const redirectUrl = role === "admin" ? "/admin" : "/dashboard";
+		return NextResponse.redirect(new URL(redirectUrl, request.url));
+	}
 
-  if (isAdminRoute) {
-    if (!isLoggedIn) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-    if (session.user.role !== "admin") {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
-  }
+	// Admins shouldn't be in /dashboard
+	if (isDashboardRoute && isLoggedIn && role === "admin") {
+		return NextResponse.redirect(new URL("/admin", request.url));
+	}
 
-  if (isDashboardRoute) {
-    if (!isLoggedIn) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-  }
+	// Protect /admin/* routes
+	if (isAdminProtectedRoute) {
+		if (!isLoggedIn) {
+			return NextResponse.redirect(new URL("/admin/login", request.url));
+		}
+		if (role !== "admin") {
+			return NextResponse.redirect(new URL("/dashboard", request.url));
+		}
+	}
 
-  if (!isPublicRoute && !isLoggedIn && !isAdminRoute && !isDashboardRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+	// Protect /dashboard routes
+	if (isDashboardRoute && !isLoggedIn) {
+		return NextResponse.redirect(new URL("/login", request.url));
+	}
 
-  const response = NextResponse.next();
-  Object.entries(securityHeaders).forEach(([key, value]) => {
-    response.headers.set(key, value);
-  });
+	// Catch-all: non-public, non-admin, non-dashboard routes
+	if (
+		!isPublicRoute &&
+		!isLoggedIn &&
+		!isAdminProtectedRoute &&
+		!isAdminLoginRoute &&
+		!isDashboardRoute
+	) {
+		return NextResponse.redirect(new URL("/login", request.url));
+	}
 
-  return response;
+	const response = NextResponse.next();
+	Object.entries(securityHeaders).forEach(([key, value]) => {
+		response.headers.set(key, value);
+	});
+	return response;
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+	matcher: [
+		"/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+	],
 };

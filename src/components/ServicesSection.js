@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useAuth } from './AuthContext';
 import LoginModal from './LoginModal';
+import { useSession } from 'next-auth/react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -317,7 +317,8 @@ export default function ServicesSection() {
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const cardsRef = useRef([]);
-  const { user } = useAuth();
+  const { data: session } = useSession();
+  const user = session?.user;
   const router = useRouter();
   const [loginOpen, setLoginOpen] = useState(false);
 

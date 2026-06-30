@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from './AuthContext';
 import { useCart } from './CartContext';
 import LoginModal from './LoginModal';
 import GooeyNav from './GooeyNav';
+import { useSession } from 'next-auth/react';
 
 const megaServices = [
   {
@@ -73,7 +73,8 @@ export default function Navbar() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [loginMessage, setLoginMessage] = useState('');
   const navRef = useRef(null);
-  const { user, logout } = useAuth();
+  const { data: session } = useSession();
+  const user = session?.user;
   const { totalItems, toggleCart } = useCart();
   const router = useRouter();
 
@@ -304,7 +305,7 @@ export default function Navbar() {
                     background: 'transparent',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     color: '#fff', fontSize: 12, fontWeight: 700, flexShrink: 0,
-                  }}>{user.avatar}</div>
+                  }}>{user.avatar || user.name.charAt(0).toUpperCase()}</div>
                   {/* <span style={{ fontSize: 13, color: '#E2E8F0', fontWeight: 500, fontFamily: 'var(--font-sans)', maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name}</span> */}
                 </Link>
                 {/* <button

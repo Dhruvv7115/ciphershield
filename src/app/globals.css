@@ -1459,7 +1459,6 @@ input:focus-visible {
 .dash-content {
   position: relative;
   z-index: 1;
-  max-width: 1100px;
 }
 
 /* ── Header ── */
@@ -1470,6 +1469,10 @@ input:focus-visible {
   flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 32px;
+}
+
+.dash-operational-badge {
+  margin-left: 0;
 }
 
 .dash-header-left h1 {
@@ -2001,6 +2004,10 @@ input:focus-visible {
 
   .dash-services-grid {
     grid-template-columns: 1fr;
+  }
+
+  .dash-operational-badge {
+    margin-left: 48px;
   }
 }
 

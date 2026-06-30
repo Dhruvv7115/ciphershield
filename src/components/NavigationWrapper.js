@@ -7,7 +7,10 @@ export default function NavigationWrapper() {
   const pathname = usePathname() || '';
   
   // Hide Navbar on login and dashboard pages
-  const isHidden = pathname.startsWith('/login') || pathname.startsWith('/dashboard');
+  const isHidden =
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/dashboard') ||
+    pathname.startsWith('/admin');
 
   if (isHidden) return null;
 

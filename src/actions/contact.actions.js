@@ -1,12 +1,12 @@
 "use server";
 
-import { connectDB } from "@/lib/db";
+import connectDB from "@/lib/db";
 import ContactRequest from "@/models/ContactRequest";
 import AuditRequest from "@/models/AuditRequest";
 import Notification from "@/models/Notification";
 import User from "@/models/User";
 import { sanitizeInput } from "@/lib/security";
-import { initApp } from "@/lib/";
+import { initApp } from "@/lib/init";
 
 const dbUnavailable = {
   success: false,

@@ -5,16 +5,13 @@ import User from "@/models/User";
 import connectDB from "@/lib/db";
 
 export const authOptions = {
-	// Use JWT strategy because we're using CredentialsProvider
-	// (Credentials doesn't work with database sessions)
 	session: {
 		strategy: "jwt",
 	},
 
-	// Point NextAuth to your custom pages — it won't use its default UI
 	pages: {
 		signIn: "/login",
-		error: "/login", // errors redirect back to signin with ?error=
+		error: "/login",
 	},
 
 	providers: [
@@ -26,31 +23,47 @@ export const authOptions = {
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials) {
-				await connectDB();
 				if (!credentials?.email || !credentials?.password) {
 					throw new Error("Email and password required");
 				}
 
-				const user = await User.findOne({ email: credentials.email }).select(
-					"+password",
-				);
+				try {
+					await connectDB();
 
-				if (!user || !user.password) {
-					throw new Error("No account found with this email");
+					const user = await User.findOne({
+						email: credentials.email,
+					}).select("+password");
+
+					if (!user || !user.password) {
+						throw new Error("No account found with this email");
+					}
+
+					const isValid = await user.comparePassword(credentials.password);
+
+					if (!isValid) {
+						throw new Error("Incorrect password");
+					}
+
+					if (user.isSuspended) {
+						throw new Error("Your account has been suspended");
+					}
+
+					await User.updateOne(
+						{ _id: user._id },
+						{ $set: { lastLogin: new Date() } },
+					);
+
+					return {
+						id: user._id.toString(),
+						name: user.name,
+						email: user.email,
+						role: user.role,
+						avatar: user.avatar,
+						isVerified: user.isVerified,
+					};
+				} catch (e) {
+					throw new Error(e.message); // re-throw so NextAuth surfaces the error
 				}
-
-				const isValid = await user.comparePassword(credentials.password);
-
-				if (!isValid) {
-					throw new Error("Incorrect password");
-				}
-
-				return {
-					id: user.id,
-					email: user.email,
-					name: `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim(),
-					image: user.avatar,
-				};
 			},
 		}),
 
@@ -92,37 +105,56 @@ export const authOptions = {
 
 	callbacks: {
 		// Save user to database and attach data to JWT token
-		async jwt({ token, user }) {
+		async jwt({ token, user, account }) {
 			if (user) {
-				await connectDB();
+				if (account?.provider === "credentials") {
+					token.id = user.id;
+					token.name = user.name;
+					token.avatar = user.avatar;
+					token.role = user.role;
+					token.isVerified = user.isVerified;
+				} else {
+					await connectDB();
 
-				await User.updateOne(
-					{ email: user.email || "" },
-					{
-						$set: {
-							avatar: user.image,
+					await User.updateOne(
+						{ email: user.email || "" },
+						{
+							$set: {
+								avatar: user.avatar,
+							},
 						},
-					},
-					{ upsert: true },
-				);
+						{ upsert: true },
+					);
 
-				const dbUser = await User.findOne({ email: user.email });
+					const dbUser = await User.findOne({ email: user.email });
 
-				token.id = dbUser._id.toString();
-				token.name = dbUser.name;
-				token.avatar = dbUser.avatar;
+					token.id = dbUser?._id?.toString() || user.id;
+					token.name = dbUser?.name || user.name;
+					token.avatar = dbUser?.avatar || user.avatar;
+					token.role = dbUser?.role || user.role;
+					token.isVerified = dbUser?.isVerified ?? user.isVerified;
+				}
 			}
 			return token;
 		},
 
 		// Expose token data on the session object (accessible via useSession)
 		async session({ session, token }) {
-			if (token) {
-				session.user.id = token.id;
+			if (session.user) {
+				session.user.id = token.id ?? token.sub;
 				session.user.name = token.name;
+				session.user.email = token.email;
 				session.user.avatar = token.avatar;
+				session.user.role = token.role;
+				session.user.isVerified = token.isVerified;
 			}
 			return session;
+		},
+		
+		async redirect({ url, baseUrl, token }) {
+			// after login, redirect admins to /admin, others to /
+			if (url.startsWith(baseUrl)) return url;
+			return baseUrl;
 		},
 	},
 };

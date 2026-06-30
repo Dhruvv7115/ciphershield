@@ -1,6 +1,6 @@
 "use server";
 
-import { connectDB } from "@/lib/db";
+import connectDB from "@/lib/db";
 import { seedDatabase } from "@/lib/seeder";
 
 let seeded = false;
@@ -18,6 +18,7 @@ export async function ensureSeeded() {
 }
 
 export async function initApp() {
+  console.log("mongo uri", process.env.MONGODB_URI);
   if (!process.env.MONGODB_URI) {
     dbChecked = true;
     dbReady = false;
@@ -25,11 +26,13 @@ export async function initApp() {
   }
 
   if (dbReady) return true;
-  if (dbChecked && !dbReady) return false;
+  // if (dbChecked && !dbReady) return false;
 
   try {
-    const conn = await connectDB();
+    const conn = connectDB();
+    console.log(conn);
     if (!conn) {
+      console.log("inside mongo connection block")
       dbChecked = true;
       dbReady = false;
       return false;

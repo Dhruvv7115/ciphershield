@@ -1,5 +1,5 @@
-import { connectDB } from "@/lib/mongodb";
-import { User, Service, Role, DEFAULT_ROLES } from "@/models";
+import connectDB from "@/lib/db";
+import { User, Service } from "@/models";
 
 const DEFAULT_SERVICES = [
 	{
@@ -213,7 +213,7 @@ export async function seedDatabase() {
 	const conn = await connectDB();
 	if (!conn) return;
 
-	const userCount = await User.countDocuments();
+	const userCount = await User.countDocuments({ role: "admin" });
 	if (userCount === 0) {
 		const adminEmail = process.env.ADMIN_EMAIL || "admin@ciphershield.com";
 		const adminPassword = process.env.ADMIN_PASSWORD || "Admin@123";
@@ -227,12 +227,6 @@ export async function seedDatabase() {
 		});
 
 		console.log(`✅ Admin user created: ${adminEmail}`);
-	}
-
-	const roleCount = await Role.countDocuments();
-	if (roleCount === 0) {
-		await Role.insertMany(DEFAULT_ROLES);
-		console.log("✅ Default roles seeded");
 	}
 
 	const serviceCount = await Service.countDocuments();

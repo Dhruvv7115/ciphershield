@@ -1,11 +1,11 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { useAuth } from '@/components/AuthContext';
 import { useCart } from '@/components/CartContext';
 import { services, categories } from '@/components/servicesData';
 import Link from 'next/link';
 import Image from 'next/image';
 import LoginModal from '@/components/LoginModal';
+import { useSession } from 'next-auth/react';
 
 const icons = {
   '01': <svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="3" y="3" width="22" height="22" rx="4" stroke="currentColor" strokeWidth="1.5" /><path d="M8 14h4l2-4 2 6 2-3h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /><circle cx="21" cy="7" r="3" fill="currentColor" opacity="0.3" /></svg>,
@@ -150,7 +150,8 @@ function ServiceCard({ service, inCart, onAdd, index }) {
 }
 
 export default function ServicesPage() {
-  const { user } = useAuth();
+  const { data: session } = useSession();
+  const user = session?.user;
   const { addToCart, items: cartItems, toggleCart } = useCart();
   const [activeCategory, setActiveCategory] = useState('All');
   const [loginOpen, setLoginOpen] = useState(false);

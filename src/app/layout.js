@@ -1,6 +1,5 @@
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/components/AuthContext";
 import { CartProvider } from "@/components/CartContext";
 import CartPanel from "@/components/CartPanel";
 import NavigationWrapper from "@/components/NavigationWrapper";
@@ -10,7 +9,7 @@ import { Providers } from "./providers";
 const inter = Inter({
 	variable: "--font-sans",
 	subsets: ["latin"],
-	weight: ["300", "400", "500", "600"],
+	weight: ["300", "400", "500", "600", "700", "800", "900"],
 	display: "swap",
 });
 
@@ -47,14 +46,12 @@ export default function RootLayout({ children }) {
 				}}
 			>
 				<Providers>
-					<AuthProvider>
-						<CartProvider>
-							{/* <GlobalBackground /> */}
-							<NavigationWrapper />
-							{children}
-							<CartPanel />
-						</CartProvider>
-					</AuthProvider>
+					<CartProvider>
+						{/* <GlobalBackground /> */}
+						<NavigationWrapper />
+						{children}
+						<CartPanel />
+					</CartProvider>
 				</Providers>
 			</body>
 		</html>

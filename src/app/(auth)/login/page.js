@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useAuth } from "@/components/AuthContext.js";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { signIn, signUp } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import axios from "axios";
 
 const features = [
@@ -28,7 +27,7 @@ const features = [
 ];
 
 function LoginContent() {
-	const { user, login, signup } = useAuth();
+	const { user } = useSession();
 	const {
 		register,
 		reset,
@@ -44,23 +43,24 @@ function LoginContent() {
 			if (mode === "signup") {
 				const response = await axios.post("/api/signup", data);
 				if (response.status === 200) {
-					signIn("credentials", {
+					await signIn("credentials", {
 						email: data.email,
 						password: data.password,
-						redirect: false,
+						callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
 					});
 				}
 			} else {
-				const res = await signIn("credentials", {
+				await signIn("credentials", {
 					email: data.email,
 					password: data.password,
-					redirect: false,
+					callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
 				});
-				if (res?.error) {
-					setError("Invalid email or password");
-					return;
-				}
-				router.replace(redirect);
+				// const session = await getSession();
+				// if (session?.user?.role === "admin") {
+				// 	router.replace("/admin");
+				// } else {
+				// 	router.replace(redirect === "/" ? "/dashboard" : redirect);
+				// }
 			}
 			reset();
 		} catch {
@@ -854,7 +854,31 @@ function LoginContent() {
 							Continue with Google
 						</button>
 
-						<div style={{ textAlign: "center" }}>
+						<div
+							style={{
+								textAlign: "center",
+								display: "flex",
+								flexDirection: "column",
+								gap: 10,
+							}}
+						>
+							<Link
+								href="/admin/login"
+								style={{
+									fontSize: 13,
+									color: "#475569",
+									textDecoration: "none",
+									transition: "color 0.15s",
+								}}
+								onMouseEnter={(e) => {
+									e.currentTarget.style.color = "#94A3B8";
+								}}
+								onMouseLeave={(e) => {
+									e.currentTarget.style.color = "#475569";
+								}}
+							>
+								Admin login →
+							</Link>
 							<Link
 								href="/"
 								style={{

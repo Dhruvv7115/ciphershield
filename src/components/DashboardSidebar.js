@@ -383,6 +383,14 @@ const DashboardSidebar = () => {
 							<span className="dash-nav-badge">{items.length}</span>
 						)}
 					</div>
+					<Link
+						href="/dashboard/quotes"
+						className={`dash-nav-item ${pathname === "/dashboard/quotes" ? "active" : ""}`}
+						onClick={() => setSidebarOpen(false)}
+					>
+						<span className="dash-nav-icon">{Icons.shield}</span>
+						My Quotes
+					</Link>
 					<div className="dash-nav-item">
 						<span className="dash-nav-icon">{Icons.settings}</span>
 						Settings

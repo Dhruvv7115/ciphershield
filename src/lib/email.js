@@ -51,3 +51,36 @@ export function resetPasswordEmailHtml(name, token) {
     </div>
   `;
 }
+
+export function quoteConfirmationEmailHtml(name, quoteId, items, totalPrice) {
+	const itemsHtml = items
+		.map(
+			(item) => `
+		<li style="margin-bottom: 8px;">
+			<strong>${item.title}</strong> — ${item.months} ${item.months === 1 ? "month" : "months"} coverage (estimated: ₹${item.totalCost.toLocaleString("en-IN")})
+		</li>
+	`,
+		)
+		.join("");
+
+	return `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; line-height: 1.6;">
+      <h2 style="color: #6366f1; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Quote Request Confirmed</h2>
+      <p>Hi ${name},</p>
+      <p>Thank you for submitting your custom quote request with CipherShield (Quote ID: <strong>${quoteId}</strong>). Someone from our security team will contact you via email soon to discuss your requirements and customize your coverage details.</p>
+      
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #475569; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px;">Requested Coverage Summary</h4>
+        <ul style="padding-left: 20px; margin-bottom: 15px;">
+          ${itemsHtml}
+        </ul>
+        <div style="font-size: 15px; font-weight: 700; color: #1e293b;">
+          Estimated Total Cost: ₹${totalPrice.toLocaleString("en-IN")}
+        </div>
+      </div>
+      
+      <p style="color: #64748b; font-size: 13px;">If you have any immediate questions, feel free to reply directly to this email.</p>
+      <p style="margin-top: 24px; font-size: 14px; font-weight: 600; color: #475569;">Best regards,<br/>The CipherShield Team</p>
+    </div>
+  `;
+}

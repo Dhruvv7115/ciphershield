@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/components/CartContext";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { cn } from "@/lib/utils";
 
 /* ── Static Data ── */
 const planFeatures = {
@@ -481,12 +480,53 @@ const iconBgs = {
 	check: { bg: "rgba(251,191,36,0.12)", color: "#FBBF24" },
 };
 
+const typeColors = {
+	info: { bg: "rgba(99,102,241,0.12)", color: "#818CF8" },
+	success: { bg: "rgba(74,222,128,0.12)", color: "#4ADE80" },
+	warning: { bg: "rgba(251,191,36,0.12)", color: "#FBBF24" },
+	error: { bg: "rgba(239,68,68,0.12)", color: "#EF4444" },
+	update: { bg: "rgba(34,211,238,0.12)", color: "#22D3EE" },
+};
+
+const getRelativeTime = (dateStr) => {
+	const now = new Date();
+	const past = new Date(dateStr);
+	const ms = now - past;
+	const mins = Math.floor(ms / 60000);
+	const hours = Math.floor(mins / 60);
+	const days = Math.floor(hours / 24);
+
+	if (mins < 1) return "Just now";
+	if (mins < 60) return `${mins}m ago`;
+	if (hours < 24) return `${hours}h ago`;
+	return `${days}d ago`;
+};
+
 export default function DashboardPage() {
 	const { data: session } = useSession();
 	const user = session?.user || null;
 	const { items } = useCart();
 	
 	const [activePlan] = useState("Professional");
+	const [notifications, setNotifications] = useState([]);
+	const [loadingNotifications, setLoadingNotifications] = useState(true);
+
+	useEffect(() => {
+		const fetchNotifications = async () => {
+			try {
+				const res = await fetch("/api/notifications");
+				const data = await res.json();
+				setNotifications(data.notifications || []);
+			} catch (err) {
+				console.error("Failed to fetch notifications:", err);
+			} finally {
+				setLoadingNotifications(false);
+			}
+		};
+		if (user) {
+			fetchNotifications();
+		}
+	}, [user]);
 
 	if (!user)
 		return (
@@ -753,23 +793,45 @@ export default function DashboardPage() {
 								View All
 							</button>
 						</div>
-						{activityFeed.map((a, i) => (
-							<div
-								key={i}
-								className="dash-activity-item"
-							>
+						{loadingNotifications ? (
+							<div style={{ display: "flex", justifyContent: "center", padding: "20px 0", color: "#818CF8" }}>
 								<div
-									className="dash-activity-icon"
-									style={{ background: a.iconBg, color: a.iconColor }}
-								>
-									{Icons.activity}
-								</div>
-								<div className="dash-activity-content">
-									<div className="dash-activity-text">{a.text}</div>
-									<div className="dash-activity-time">{a.time}</div>
-								</div>
+									style={{
+										width: 20,
+										height: 20,
+										border: "2px solid rgba(129,140,248,0.2)",
+										borderTopColor: "#818CF8",
+										borderRadius: "50%",
+										animation: "spin 1s linear infinite",
+									}}
+								/>
 							</div>
-						))}
+						) : notifications.length === 0 ? (
+							<div style={{ padding: "24px 0", textAlign: "center", color: "#64748B", fontSize: 13 }}>
+								No recent activity
+							</div>
+						) : (
+							notifications.map((a, i) => {
+								const styleMeta = typeColors[a.type] || typeColors.info;
+								return (
+									<div
+										key={i}
+										className="dash-activity-item"
+									>
+										<div
+											className="dash-activity-icon"
+											style={{ background: styleMeta.bg, color: styleMeta.color }}
+										>
+											{Icons.activity}
+										</div>
+										<div className="dash-activity-content">
+											<div className="dash-activity-text">{a.message}</div>
+											<div className="dash-activity-time">{getRelativeTime(a.createdAt)}</div>
+										</div>
+									</div>
+								);
+							})
+						)}
 					</div>
 
 					{/* Active Plan */}

@@ -22,11 +22,21 @@
 
   /* Borders */
   --border-subtle: #334155;
+  --border: #334155;
   --border-focus: rgba(59, 130, 246, 0.5);
 
   /* Text */
   --text-primary: #E2E8F0;
   --text-muted: #94A3B8;
+  --muted-foreground: #94A3B8;
+  --foreground: #F1F5F9;
+  --background: #000000;
+
+  /* Primary / Secondary */
+  --primary: #818CF8;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1E293B;
+  --secondary-foreground: #F8FAFC;
 
   /* Brand */
   --accent: #22D3EE;
@@ -1459,6 +1469,7 @@ input:focus-visible {
 .dash-content {
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
 /* ── Header ── */

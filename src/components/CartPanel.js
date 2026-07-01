@@ -2,9 +2,13 @@
 
 import { useCart } from './CartContext';
 import { useEffect, useRef } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function CartPanel() {
-  const { items, isOpen, closeCart, removeFromCart, clearCart } = useCart();
+  const { items, isOpen, closeCart, removeFromCart, clearCart, submitQuote } = useCart();
+  const { data: session } = useSession();
+  const router = useRouter();
   const panelRef = useRef(null);
 
   useEffect(() => {
@@ -363,11 +367,18 @@ export default function CartPanel() {
                 borderRadius: 12,
                 letterSpacing: '0.02em',
               }}
-              onClick={() => {
-                closeCart();
-                const el = document.querySelector('#contact');
-                if (el) {
-                  setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 350);
+              onClick={async () => {
+                if (!session) {
+                  closeCart();
+                  router.push('/login?callbackUrl=/dashboard/services');
+                  return;
+                }
+                const res = await submitQuote();
+                if (res.success) {
+                  closeCart();
+                  router.push('/dashboard/quotes');
+                } else {
+                  alert(res.error || 'Failed to submit quote request');
                 }
               }}
             >
